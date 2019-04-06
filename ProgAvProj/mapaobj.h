@@ -18,7 +18,7 @@ public:
     void criaMapa();
 
 
-    void PrintConnectEdelems();
+    void PrintConnectEdelems() const;
 
     const uint8_t _xSize{5};
     const uint8_t _ySize{5};

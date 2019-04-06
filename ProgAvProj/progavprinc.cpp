@@ -36,13 +36,9 @@ void ProgAvPrinc::on_btnTest2_clicked()
 {
     qDebug() << "2- Lets say Hello!";
 
-    MapaObj prinMap{5, 5};
-    prinMap.createNew();
-//    MapaObj prinMap{};
-    prinMap.PrintConnectEdelems();
-    prinMap.setName("Lucas_test");
-
     JsonOp jsonOperator{};
-    jsonOperator.saveMap(prinMap, "/home/lvkaz/teste_json.json");
+    const auto mapLoad{jsonOperator.loadMap("/home/lvkaz/teste_json.json")};
+    mapLoad.PrintConnectEdelems();
+    qDebug() << QString::fromStdString(mapLoad.getName());
 
 }

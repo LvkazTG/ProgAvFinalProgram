@@ -78,7 +78,7 @@ void MapaObj::createConnectionsMatrix()
     }
 }
 //--------------------------------------------------------------------------------------------------
-void MapaObj::PrintConnectEdelems()
+void MapaObj::PrintConnectEdelems() const
 {
     for(const auto& elem : _points)
     {

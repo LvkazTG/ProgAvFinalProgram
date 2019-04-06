@@ -12,6 +12,8 @@ public:
     explicit JsonOp(QObject *parent = nullptr);
 
     bool saveMap(const MapaObj& map,const std::string mapFile);
+    MapaObj loadMap(const std::string mapFile);
+
 signals:
 
 public slots:
