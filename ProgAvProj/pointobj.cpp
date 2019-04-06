@@ -6,7 +6,7 @@ PointObj::PointObj(const uint8_t newX, const uint8_t newY) : _xCoord{newX}, _yCo
     _pHash = (static_cast<uint16_t>(_xCoord << 8)) | _yCoord;
 }
 
-double PointObj::distFrom(PointObj otherPoint) const
+double PointObj::distFrom(const PointObj& otherPoint) const
 {
     return sqrt(pow(this->_xCoord-otherPoint.getX(),2) + pow(this->_yCoord-otherPoint.getY(),2));
 }
@@ -26,26 +26,12 @@ uint16_t PointObj::getHash() const
     return _pHash;
 }
 
-void PointObj::connectPoints(const std::map<uint16_t, uint8_t>& newConns)
+const std::string& PointObj::getName()
 {
-    _connectedPoints = newConns;
+    return _pName;
 }
 
-void PointObj::connectPoints(const std::vector<std::tuple<uint8_t, uint16_t> > &newConns)
+void PointObj::setName(const std::string& newName)
 {
-    for(const auto& newElem : newConns)
-    {
-        _connectedPoints.emplace(std::get<1>(newElem), std::get<0>(newElem));
-    }
-}
-
-void PointObj::connectNewPoint(std::shared_ptr<PointObj> newPoint, const uint8_t connCost)
-{
-    const auto newPointHash{newPoint->getHash()};
-    _connectedPoints.emplace(newPointHash, connCost);
-}
-
-const std::map<uint16_t, uint8_t> &PointObj::getConnectedMap() const
-{
-    return _connectedPoints;
+    _pName = newName;
 }

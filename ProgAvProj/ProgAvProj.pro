@@ -25,12 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++17
 
 SOURCES += \
+        connlist.cpp \
+        jsonop.cpp \
         main.cpp \
         mapaobj.cpp \
         pointobj.cpp \
         progavprinc.cpp
 
 HEADERS += \
+        connlist.h \
+        jsonop.h \
         mapaobj.h \
         pointobj.h \
         progavprinc.h

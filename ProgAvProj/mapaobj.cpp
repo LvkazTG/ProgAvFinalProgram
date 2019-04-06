@@ -7,16 +7,17 @@
 //--------------------------------------------------------------------------------------------------
 MapaObj::MapaObj()
 {
-    init();
+//    init();
 }
 //--------------------------------------------------------------------------------------------------
 MapaObj::MapaObj(const uint8_t xSize, const uint8_t ySize) : _xSize{xSize}, _ySize{ySize}
 {
-    init();
+//    init();
 }
 //--------------------------------------------------------------------------------------------------
-void MapaObj::init()
+void MapaObj::createNew()
 {
+    _points.clear();
 //    _points.reserve(_xSize*_ySize);
 
     for(uint8_t x_index = 0 ; x_index < _xSize; x_index++)
@@ -35,7 +36,7 @@ void MapaObj::init()
 //--------------------------------------------------------------------------------------------------
 void MapaObj::createConnectionsMatrix()
 {
-    auto rng = std::default_random_engine {};
+    auto rng = std::default_random_engine{};
 
     const uint8_t distorceDistVal{4};
     const uint8_t maxConnectionDist{25};
@@ -72,7 +73,8 @@ void MapaObj::createConnectionsMatrix()
             newLastIndexMatrix->resize(_maxConnectionsPerPoint);
         }
 
-        elem1.second->connectPoints(*newLastIndexMatrix);
+        _connectedList.connectPoints(elem1.second, *newLastIndexMatrix);
+//        elem1.second->connectPoints(*newLastIndexMatrix);
     }
 }
 //--------------------------------------------------------------------------------------------------
@@ -81,7 +83,7 @@ void MapaObj::PrintConnectEdelems()
     for(const auto& elem : _points)
     {
         qDebug() << "Elem hash" << elem.first << " confirmed " << elem.second->getHash();
-        const auto elemConnInfo{elem.second->getConnectedMap()};
+        const auto elemConnInfo{_connectedList.getConnectedMapElem(elem.second)};
 
         auto printItem{qDebug()};
         printItem << "Connected to hashes";
@@ -94,14 +96,55 @@ void MapaObj::PrintConnectEdelems()
     qDebug() << "Num points" << _points.size();
 }
 //--------------------------------------------------------------------------------------------------
+void MapaObj::setName(const std::string& newName)
+{
+    _mapName = newName;
+}
+//--------------------------------------------------------------------------------------------------
+const std::string& MapaObj::getName() const
+{
+    return _mapName;
+}
+//--------------------------------------------------------------------------------------------------
+const ConnList& MapaObj::getConnList() const
+{
+    return _connectedList;
+}
+//--------------------------------------------------------------------------------------------------
+const std::shared_ptr<PointObj>& MapaObj::getPoint(const uint16_t pointHash) const
+{
+    return _points.at(pointHash);
+}
+//--------------------------------------------------------------------------------------------------
+uint8_t MapaObj::getXSize() const
+{
+    return _xSize;
+}
+//--------------------------------------------------------------------------------------------------
+uint8_t MapaObj::getYSize() const
+{
+    return _ySize;
+}
+//--------------------------------------------------------------------------------------------------
+void MapaObj::initMap(const std::vector<std::shared_ptr<PointObj>>& points, const ConnList& connList)
+{
+    std::map<uint16_t, std::shared_ptr<PointObj>> provMapPoints{};
+    for(const auto& point : points)
+    {
+        const auto pointHash{point->getHash()};
+        provMapPoints.emplace(pointHash, point);
+    }
 
-
-
-
-
-
-
-
+    initMap(std::move(provMapPoints), connList);
+}
+//--------------------------------------------------------------------------------------------------
+void MapaObj::initMap(std::map<uint16_t, std::shared_ptr<PointObj>> points, ConnList connList)
+{
+    _points.clear();
+    _points = std::move(points);
+    _connectedList = std::move(connList);
+}
+//--------------------------------------------------------------------------------------------------
 
 
 

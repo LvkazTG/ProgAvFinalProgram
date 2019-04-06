@@ -20,6 +20,7 @@ private:
 
 private slots:
     void on_btnTest_clicked();
+    void on_btnTest2_clicked();
 };
 
 #endif // PROGAVPRINC_H
