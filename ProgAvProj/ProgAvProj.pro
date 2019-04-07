@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,14 +31,16 @@ SOURCES += \
         main.cpp \
         mapaobj.cpp \
         pointobj.cpp \
-        progavprinc.cpp
+        progavprinc.cpp \
+        xmlop.cpp
 
 HEADERS += \
         connlist.h \
         jsonop.h \
         mapaobj.h \
         pointobj.h \
-        progavprinc.h
+        progavprinc.h \
+        xmlop.h
 
 FORMS += \
         progavprinc.ui

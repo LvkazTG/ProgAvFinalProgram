@@ -1,18 +1,17 @@
-#ifndef JSONOP_H
-#define JSONOP_H
+#ifndef XMLOP_H
+#define XMLOP_H
 
 #include <QObject>
 
 class MapaObj;
 
-class JsonOp : public QObject
+class xmlOp : public QObject
 {
     Q_OBJECT
 public:
-    explicit JsonOp(QObject *parent = nullptr);
+    explicit xmlOp(QObject *parent = nullptr);
 
     bool saveMap(const MapaObj& map,const std::string mapFile);
-
     MapaObj loadMap(const std::string mapFile);
 
 signals:
@@ -20,4 +19,4 @@ signals:
 public slots:
 };
 
-#endif // JSONOP_H
+#endif // XMLOP_H

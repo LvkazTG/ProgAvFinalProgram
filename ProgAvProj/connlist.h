@@ -11,6 +11,7 @@ class ConnList
 public:
     ConnList();
 
+    void createEmptyHashEntry(const uint16_t elemHash);
 
     void connectPoints(std::shared_ptr<PointObj> point, const std::map<uint16_t, uint8_t>& newConns);
     void connectPoints(const uint16_t pointHash, const std::map<uint16_t, uint8_t>& newConns);
@@ -19,6 +20,7 @@ public:
 
     void connectNewPoint(std::shared_ptr<PointObj> point, std::shared_ptr<PointObj> newPoint, const uint8_t connCost);
     void connectNewPoint(const uint16_t pointHash, std::shared_ptr<PointObj> newPoint, const uint8_t connCost);
+    void connectNewPoint(const uint16_t pointHash, const uint16_t newPointHash, const uint8_t connCost);
 
     const std::map<uint16_t, uint8_t>& getConnectedMapElem(const uint16_t elemHash) const;
     const std::map<uint16_t, uint8_t>& getConnectedMapElem(std::shared_ptr<PointObj> point) const;

@@ -2,7 +2,9 @@
 #include "ui_progavprinc.h"
 
 #include "mapaobj.h"
+
 #include "jsonop.h"
+#include "xmlop.h"
 
 #include <QDebug>
 
@@ -36,8 +38,16 @@ void ProgAvPrinc::on_btnTest2_clicked()
 {
     qDebug() << "2- Lets say Hello!";
 
-    JsonOp jsonOperator{};
-    const auto mapLoad{jsonOperator.loadMap("/home/lvkaz/teste_json.json")};
+//    JsonOp jsonOperator{};
+//    const auto mapLoad{jsonOperator.loadMap("/home/lvkaz/teste_json.json")};
+//    mapLoad.PrintConnectEdelems();
+//    qDebug() << QString::fromStdString(mapLoad.getName());
+
+//    xmlOp xmlOperator{};
+//    xmlOperator.saveMap(mapLoad, "/home/lvkaz/teste_xml.xml");
+
+    xmlOp xmlOperator{};
+    const auto mapLoad{xmlOperator.loadMap("/home/lvkaz/teste_xml.xml")};
     mapLoad.PrintConnectEdelems();
     qDebug() << QString::fromStdString(mapLoad.getName());
 

@@ -33,6 +33,11 @@ void ConnList::connectNewPoint(std::shared_ptr<PointObj> point, std::shared_ptr<
 void ConnList::connectNewPoint(const uint16_t pointHash, std::shared_ptr<PointObj> newPoint, const uint8_t connCost)
 {
     const auto newPointHash{newPoint->getHash()};
+    connectNewPoint(pointHash, newPointHash, connCost);
+}
+//--------------------------------------------------------------------------------------------------
+void ConnList::connectNewPoint(const uint16_t pointHash, const uint16_t newPointHash, const uint8_t connCost)
+{
     _connectedPoints[pointHash].emplace(std::make_pair(newPointHash, connCost));
 }
 //--------------------------------------------------------------------------------------------------
@@ -48,6 +53,11 @@ const std::map<uint16_t, uint8_t>& ConnList::getConnectedMapElem(std::shared_ptr
 //--------------------------------------------------------------------------------------------------
 const std::map<uint16_t, uint8_t>& ConnList::getConnectedMapElem(const uint16_t elemHash) const
 {
+    //To do, ADD a try catch statement for invalid searches
     return _connectedPoints.at(elemHash);
 }
 //--------------------------------------------------------------------------------------------------
+void ConnList::createEmptyHashEntry(const uint16_t elemHash)
+{
+    _connectedPoints[elemHash] = {};
+}
