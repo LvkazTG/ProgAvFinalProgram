@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <random>
+#include <chrono>
 
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
@@ -35,11 +36,14 @@ void MapaObj::createNew()
 }
 //--------------------------------------------------------------------------------------------------
 void MapaObj::createConnectionsMatrix()
-{
+{    
+    std::random_device r{};
     auto rng = std::default_random_engine{};
+    rng.seed(std::chrono::system_clock::now().time_since_epoch().count());
 
     const uint8_t distorceDistVal{4};
-    const uint8_t maxConnectionDist{25};
+//    const uint8_t maxConnectionDist{25};
+    const uint8_t maxConnectionDist{10};
 
     std::vector<std::vector<std::tuple<uint8_t, uint16_t>>> matrixValues{};
 
@@ -114,6 +118,21 @@ const ConnList& MapaObj::getConnList() const
 const std::shared_ptr<PointObj>& MapaObj::getPoint(const uint16_t pointHash) const
 {
     return _points.at(pointHash);
+}
+//--------------------------------------------------------------------------------------------------
+const std::shared_ptr<PointObj> MapaObj::getPointByName(const std::string pointName) const
+{
+    std::shared_ptr<PointObj> ret{nullptr};
+
+    for(const auto& elemIt: _points)
+    {
+        if(pointName == elemIt.second->getName())
+        {
+            ret = elemIt.second;
+        }
+    }
+
+    return ret;
 }
 //--------------------------------------------------------------------------------------------------
 uint8_t MapaObj::getXSize() const

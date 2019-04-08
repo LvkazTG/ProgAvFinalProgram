@@ -30,16 +30,20 @@ SOURCES += \
         jsonop.cpp \
         main.cpp \
         mapaobj.cpp \
+        pointconniter.cpp \
         pointobj.cpp \
         progavprinc.cpp \
+        searchdeep.cpp \
         xmlop.cpp
 
 HEADERS += \
         connlist.h \
         jsonop.h \
         mapaobj.h \
+        pointconniter.h \
         pointobj.h \
         progavprinc.h \
+        searchdeep.h \
         xmlop.h
 
 FORMS += \

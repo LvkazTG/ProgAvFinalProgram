@@ -4,6 +4,9 @@
 PointObj::PointObj(const uint8_t newX, const uint8_t newY) : _xCoord{newX}, _yCoord{newY}
 {
     _pHash = (static_cast<uint16_t>(_xCoord << 8)) | _yCoord;
+
+    //Debug
+    createFakeName();
 }
 
 double PointObj::distFrom(const PointObj& otherPoint) const
@@ -34,4 +37,9 @@ const std::string& PointObj::getName()
 void PointObj::setName(const std::string& newName)
 {
     _pName = newName;
+}
+
+void PointObj::createFakeName()
+{
+    _pName = "point_" + std::to_string(_xCoord) + "_" + std::to_string(_yCoord);
 }

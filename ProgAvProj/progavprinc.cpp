@@ -6,6 +6,8 @@
 #include "jsonop.h"
 #include "xmlop.h"
 
+#include "searchdeep.h"
+
 #include <QDebug>
 
 ProgAvPrinc::ProgAvPrinc(QWidget *parent) :
@@ -28,10 +30,14 @@ void ProgAvPrinc::on_btnTest_clicked()
     prinMap.createNew();
 //    MapaObj prinMap{};
     prinMap.PrintConnectEdelems();
-    prinMap.setName("Lucas_test");
+    prinMap.setName("Lucas_test_2");
 
     JsonOp jsonOperator{};
-    jsonOperator.saveMap(prinMap, "/home/lvkaz/teste_json.json");
+    jsonOperator.saveMap(prinMap, "/home/lvkaz/teste_json_ease.json");
+
+    xmlOp xmlOperator{};
+    xmlOperator.saveMap(prinMap, "/home/lvkaz/teste_xml_ease.xml");
+
 }
 
 void ProgAvPrinc::on_btnTest2_clicked()
@@ -46,9 +52,27 @@ void ProgAvPrinc::on_btnTest2_clicked()
 //    xmlOp xmlOperator{};
 //    xmlOperator.saveMap(mapLoad, "/home/lvkaz/teste_xml.xml");
 
+//    xmlOp xmlOperator{};
+//    const auto mapLoad{xmlOperator.loadMap("/home/lvkaz/teste_xml.xml")};
+//    mapLoad.PrintConnectEdelems();
+//    qDebug() << QString::fromStdString(mapLoad.getName());
+
+
     xmlOp xmlOperator{};
-    const auto mapLoad{xmlOperator.loadMap("/home/lvkaz/teste_xml.xml")};
+    const auto mapLoad{xmlOperator.loadMap("/home/lvkaz/teste_xml_ease.xml")};
     mapLoad.PrintConnectEdelems();
     qDebug() << QString::fromStdString(mapLoad.getName());
+
+    SearchDeep searchDeepTry{mapLoad, "point_1_4", "point_4_1"};
+    bool returned{searchDeepTry.init()};
+
+    if(returned)
+    {
+        qDebug() << "Very good";
+    }
+    else
+    {
+        qDebug() << "Fail, bad choice?";
+    }
 
 }

@@ -35,6 +35,10 @@ private:
     const uint8_t _xCoord{0};
     const uint8_t _yCoord{0};
     uint16_t _pHash{0};
+
+
+    void createFakeName();
+
 };
 
 #endif // POINTOBJ_H

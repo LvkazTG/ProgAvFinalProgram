@@ -33,7 +33,10 @@ public:
     const std::string& getName() const;
 
     const ConnList& getConnList() const;
+
     const std::shared_ptr<PointObj>& getPoint(const uint16_t pointHash) const;
+    const std::shared_ptr<PointObj> getPointByName(const std::string pointName) const;
+
 
     void initMap(const std::vector<std::shared_ptr<PointObj>>& points, const ConnList& connList);
 
@@ -45,7 +48,8 @@ private:
     void initMap(std::map<uint16_t, std::shared_ptr<PointObj>> points, ConnList connList);
 
     ConnList _connectedList{};
-    uint8_t _maxConnectionsPerPoint{4};
+//    uint8_t _maxConnectionsPerPoint{4};
+    uint8_t _maxConnectionsPerPoint{3};
     bool finishedMapa{false};
     std::string _mapName{};
 
