@@ -1,29 +1,28 @@
 #include "searchlevel.h"
-#include <limits>
 #include <set>
 
-#include <QDebug>
 #include "pointobj.h"
-#include "mapaobj.h"
 
+#include <QDebug>
+//--------------------------------------------------------------------------------------------------
 SearchLevel::SearchLevel(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
     baseSearch(map, startPoint, endPoint)
 {
 
 }
-
+//--------------------------------------------------------------------------------------------------
 void SearchLevel::initLoopConditions()
 {
     _startingPath = _actualPath;
 
     _actuallvlSearch = 1;
 }
-
+//--------------------------------------------------------------------------------------------------
 bool SearchLevel::extraCoonditionLoopSearch() const
 {
     return (_maxlvlSearch > _actuallvlSearch);
 }
-
+//--------------------------------------------------------------------------------------------------
 void SearchLevel::principalLoopSearch()
 {
     _keepSearchGoing = false;
@@ -40,21 +39,21 @@ void SearchLevel::principalLoopSearch()
     while(true)
     {
         auto actualElemIter{_actualPath.rbegin()};
-        if(actualElemIter->getPointHash() != _endHash)
-        {
-            _keepSearchGoing |= validRoute();
 
+        // Check if is solution
+        const auto [isEnd, isLessExpensive] = validateEnd(actualElemIter->getPointHash());
+        if(!isEnd)
+        {
+            _keepSearchGoing |= (isLessExpensive && validRoute());
+
+            // Way slower than new implementation
+            //_keepSearchGoing |= validRoute();
         }
         else
         {
-            calculateActualCost();
-
             // If solution is better
-            if(_actualPathCost < _bestPathCost)
+            if(isLessExpensive)
             {
-                _bestPathCost = _actualPathCost;
-                _bestPath = _actualPath;
-
                 // If found best path, search still has meaning
                 _keepSearchGoing = true;
             }
@@ -104,3 +103,4 @@ void SearchLevel::principalLoopSearch()
         }
     }
 }
+//--------------------------------------------------------------------------------------------------

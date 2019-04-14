@@ -21,6 +21,7 @@ public:
 protected:
     void calculateActualCost();
     bool validRoute() const;
+    std::tuple<const bool, const bool> validateEnd(const uint16_t pointHash);
 
     bool _keepSearchGoing{false};
     uint16_t _startHash{0};

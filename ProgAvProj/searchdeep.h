@@ -1,37 +1,23 @@
 #ifndef SEARCHDEEP_H
 #define SEARCHDEEP_H
 
-#include <list>
-#include <map>
+#include "basesearch.h"
 
-#include "connlist.h"
-#include "mapaobj.h"
-#include "pointconniter.h"
-//#include "connlist.h"
-
-class ConnList;
-
-class SearchDeep
+class SearchDeep : public baseSearch
 {
 public:
-    SearchDeep(const MapaObj& map, const std::string startPoint,
-               const std::string endPoint);
-    bool init();
+    SearchDeep(const MapaObj& map, const std::string& startPoint,
+               const std::string& endPoint);
 
-    uint16_t _startHash{0};
-    uint16_t _endHash{0};
+    virtual ~SearchDeep() override = default;
 
-    std::list<PointConnIter> _actualPath{};
-    std::list<PointConnIter> _bestPath{};
+private:
+    virtual void initLoopConditions() override;
+    virtual bool extraCoonditionLoopSearch() const override;
+    virtual void principalLoopSearch() override;
 
-    uint64_t _actualPathCost{0};
-    uint64_t _bestPathCost{0};
-
-    ConnList const* _connMapList{nullptr};
-
-    private:
-        void calculateActualCost();
-
+    bool _previousError{false};
+    bool _popLastElem{false};
 };
 
 #endif // SEARCHDEEP_H

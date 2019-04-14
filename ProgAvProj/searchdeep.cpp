@@ -1,76 +1,64 @@
 #include "searchdeep.h"
-#include <limits>
+
+#include "pointobj.h"
 
 #include <QDebug>
-#include "pointobj.h"
-static MapaObj const* bla{nullptr};
-
-SearchDeep::SearchDeep(const MapaObj& map, const std::string startPoint, const std::string endPoint) :
-    _bestPathCost{std::numeric_limits<uint64_t>::max()}
+//--------------------------------------------------------------------------------------------------
+SearchDeep::SearchDeep(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
+    baseSearch(map, startPoint, endPoint)
 {
-    bla = &map;
 
-    const auto startElem{map.getPointByName(startPoint)};
-    if(startElem != nullptr)
-    {
-        _startHash = startElem->getHash();
-    }
-
-    const auto endElem{map.getPointByName(endPoint)};
-    if(endElem != nullptr)
-    {
-        _endHash = endElem->getHash();
-    }
-
-    _connMapList = &map.getConnList();
 }
-
-bool SearchDeep::init()
+//--------------------------------------------------------------------------------------------------
+void SearchDeep::initLoopConditions()
 {
-    bool ret{false};
+    _previousError = false;
+    _popLastElem = false;
+}
+//--------------------------------------------------------------------------------------------------
+bool SearchDeep::extraCoonditionLoopSearch() const
+{
+    // No extra conditional break of loop stipulated
+    return true;
+}
+//--------------------------------------------------------------------------------------------------
+void SearchDeep::principalLoopSearch()
+{
+    // Advance
+    auto iterToEnd{_actualPath.rbegin()};
 
-    _actualPath.emplace_back(_startHash, _connMapList->getConnectedMapElem(_startHash));
+//    auto printer{qDebug()};
+//    for(const auto& elemIt : _actualPath)
+//    {
+//        printer << "Point " << QString::fromStdString(bla->getPoint(elemIt.getPointHash())->getName()) << " ";
+//    }
+//    printer << "finished this path print";
 
-    qDebug() << "First Conn hash" << _actualPath.begin()->getActualConnHash();
 
-    bool keepSearchGoing{true};
-    bool previousError{false};
-    bool iterSamePos{true};
-    bool popLastElem{false};
-
-    while(keepSearchGoing)
+    if(_previousError)
     {
-        // Advance
-        auto iterToEnd{_actualPath.rbegin()};
-
-        auto printer{qDebug()};
-        for(const auto& elemIt : _actualPath)
+        if(_popLastElem)
         {
-            printer << "Point " << QString::fromStdString(bla->getPoint(elemIt.getPointHash())->getName()) << " ";
+            _actualPath.pop_back();
+            iterToEnd = _actualPath.rbegin();
+            _popLastElem = false;
         }
-        printer << "finished this path print";
 
-
-        if(previousError)
-        {
-            if(popLastElem)
-            {
-                _actualPath.pop_back();
-                iterToEnd = _actualPath.rbegin();
-                popLastElem = false;
-            }
-
-            previousError = false;
+        _previousError = false;
 //            iterSamePos = true;
 
-            // Enough?
-            if((_actualPath.empty()))
-            {
-                keepSearchGoing = false;
-                break;
-            }
-            else if(!iterToEnd->isOnLastValidIter())
-            {
+        // Enough?
+        if((_actualPath.empty()))
+        {
+            _keepSearchGoing = false;
+
+            // Force end loop
+            // Done altering _keepSearchGoing flag
+            // No more action needed for now
+            //break;
+        }
+        else if(!iterToEnd->isOnLastValidIter())
+        {
 //                if(iterToEnd->getPointHash() == 2)
 //                {
 //                    qDebug() << "View all";
@@ -83,7 +71,7 @@ bool SearchDeep::init()
 ////                    qDebug() << "Normal?";
 //                }
 
-                bool view{iterToEnd->moveNext()};
+            bool view{iterToEnd->moveNext()};
 
 //                if(iterToEnd->getPointHash() == 2)
 //                {
@@ -93,138 +81,79 @@ bool SearchDeep::init()
 
 //                qDebug() << "View" << (view ? "Ok" : "Nok");
 //                qDebug() << "Deb point";
-            }
-            else
-            {
-                previousError = true;
-                popLastElem = true;
-                continue;
-            }
         }
         else
         {
-            if(iterSamePos)
+            _previousError = true;
+            _popLastElem = true;
+
+            //Force next iteraction here
+            // No more action needed for now
+            //continue;
+        }
+    }
+    else
+    {
+        bool directToEnd{false};
+
+        const auto newConnHash{iterToEnd->getActualConnHash()};
+
+        // Check presence in list (define error)
+
+        bool alreadyInPath{false};
+        for(const auto& elemInPath : _actualPath)
+        {
+            if(elemInPath.getPointHash() == newConnHash)
             {
-                iterSamePos = false;
-                //pass
+                alreadyInPath = true;
+                break;
             }
-            else
-            {
-                const auto newConnHash{iterToEnd->getActualConnHash()};
+        }
 
-                // Check presence in list (define error)
+        if(alreadyInPath)
+        {
+            // Remove later the popLastElem as false as is not needed but keep comment
+            // Its not necessary here, but is good to mark it
+            _popLastElem = false;
+            _previousError = true;
 
-                bool alreadyInPath{false};
-                for(const auto& elemInPath : _actualPath)
-                {
-                    if(elemInPath.getPointHash() == newConnHash)
-                    {
-                        alreadyInPath = true;
-                        break;
-                    }
-                }
+            directToEnd = true;
 
-                if(alreadyInPath)
-                {
-                    // Remove later the popLastElem as false as is not needed but keep comment
-                    // Its not necessary here, but is good to mark it
-                    popLastElem = false;
-                    previousError = true;
-                    continue;
-                }
+            //Force next iteraction here
+            // Doing it with directToEnd flag
+            //continue;
+        }
 
-                _actualPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
-                iterToEnd = _actualPath.rbegin();
+        if(!directToEnd)
+        {
+            _actualPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
+            iterToEnd = _actualPath.rbegin();
+        }
 
-            }
+
+        if(!directToEnd)
+        {
 
             // Check if is solution
-            if(iterToEnd->getPointHash() == _endHash)
+            const auto [isEnd, isLessExpensive] = validateEnd(iterToEnd->getPointHash());
+            if(!isEnd)
             {
-                // calculate cost
-                calculateActualCost();
-
-                // If solution is better
-                if(_actualPathCost < _bestPathCost)
+                if(!isLessExpensive)
                 {
-                    _bestPathCost = _actualPathCost;
-                    _bestPath = _actualPath;
-
-                    //Debug
-//                    keepSearchGoing = false;
-//                    continue;
+                    _previousError = true;
+                    _popLastElem = true;
                 }
 
-                previousError = true;
-                popLastElem = true;
             }
             else
             {
-                // calculate cost
-                calculateActualCost();
-
-                if(_actualPathCost >= _bestPathCost)
-                {
-                    previousError = true;
-                    popLastElem = true;
-                }
+                _previousError = true;
+                _popLastElem = true;
             }
 
             // Check if is better than best
             // Update cost (check error)
         }
     }
-
-
-    ret = !_bestPath.empty();
-
-    qDebug() << "Final route if any\n";
-    for(const auto& elemIt : _bestPath)
-    {
-        qDebug() << "Point " << QString::fromStdString(bla->getPoint(elemIt.getPointHash())->getName()) << " " << "Hash " << elemIt.getPointHash() << "Cost " << elemIt.getActualConnCost();
-    }
-    qDebug() << "\n Cost " << _bestPathCost;
-
-
-    return ret;
 }
-
-void SearchDeep::calculateActualCost()
-{
-    _actualPathCost = 0;
-
-//    qDebug() << "List size " << _actualPath.size();
-    for(auto it{_actualPath.begin()} ; _actualPath.end() != it ; it++)
-    {
-        const auto itNext{std::next(it)};
-        if(itNext == _actualPath.end())
-        {
-            break;
-        }
-
-        _actualPathCost += it->getActualConnCost();
-//        qDebug() << "new cost "<< _actualPathCost;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//--------------------------------------------------------------------------------------------------

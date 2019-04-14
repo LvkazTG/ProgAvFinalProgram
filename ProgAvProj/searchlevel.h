@@ -18,8 +18,6 @@ private:
     std::list<PointConnIter> _startingPath{};
     uint64_t _actuallvlSearch{0};
     const uint64_t _maxlvlSearch{500};
-
-
 };
 
 #endif // SEARCHLEVEL_H
