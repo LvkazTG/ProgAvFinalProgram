@@ -1,88 +1,119 @@
+// Reading on internet, alter nested json parts is "not supported"
+// https://stackoverflow.com/questions/17034336/how-to-change-qjsonobject-value-in-a-qjson-hierarchy-without-using-copies
+
 #include "jsonop.h"
 
-#include <QJsonObject>
-#include <QJsonArray>
 #include <QJsonDocument>
-#include <QFile>
 
 #include "mapaobj.h"
 #include "connlist.h"
 
-#include "pointobj.h"
-#include "memory"
-
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
-JsonOp::JsonOp(QObject *parent) : QObject(parent)
+JsonOp::JsonOp(QObject *parent) : FormatOp{parent}
 {
 
 }
 //--------------------------------------------------------------------------------------------------
-bool JsonOp::saveMap(const MapaObj& map, const std::string mapFile)
+void JsonOp::initialActionsSave()
 {
-    bool ret{true};
-
-    QJsonObject obj{};
-    obj["mapName"] = QString::fromStdString(map.getName());
-    obj["xSize"] = map.getXSize();
-    obj["ySize"] = map.getYSize();
-
-    QJsonArray objAllPoints{};
-    for(const auto& elemInfos : map.getConnList().getConnectedMap())
-    {
-        QJsonObject objPoint{};
-        const auto& point{map.getPoint(elemInfos.first)};
-
-        objPoint["pointName"] = QString::fromStdString(point->getName());
-        objPoint["xCoord"] = point->getX();
-        objPoint["yCoord"] = point->getY();
-        QJsonArray objPontosConn{};
-        for(const auto& elemConn : elemInfos.second)
-        {
-            QJsonObject objConnInfo{};
-            objConnInfo["hashConn"] = elemConn.first;
-            objConnInfo["costConn"] = elemConn.second;
-            objPontosConn.push_back(objConnInfo);
-        }
-        objPoint["pointConns"] = objPontosConn;
-
-        objAllPoints.push_back(objPoint);
-    }
-
-    obj["points"] = objAllPoints;
-
-    QJsonDocument objDoc{obj};
-    QFile saveFile{QString::fromStdString(mapFile)};
-    saveFile.open(QIODevice::WriteOnly);
-    const auto quantWrite{saveFile.write(objDoc.toJson())};
-    saveFile.close();
-
-    if(quantWrite <= 0)
-    {
-       ret = false;
-    }
-
-    return ret;
+    _obj = std::make_unique<QJsonObject>();
 }
 //--------------------------------------------------------------------------------------------------
-MapaObj JsonOp::loadMap(const std::string mapFile)
+void JsonOp::createMapHeaderData(const MapaObj& map)
 {
-    std::vector<QString> expectedKeys{"mapName", "xSize", "ySize", "points"};
-    ConnList newConnList{};
-
-    QFile loadFile{QString::fromStdString(mapFile)};
-    loadFile.open(QIODevice::ReadOnly);
-    QJsonDocument objDoc{QJsonDocument::fromJson(loadFile.readAll())};
-    loadFile.close();
-
-    auto obj{objDoc.object()};
-    const auto objAllKeys{obj.keys()};
-
-    bool hasAllKeys{!objAllKeys.empty()};
-    for(const auto& item : expectedKeys)
+    if(nullptr != _obj)
     {
-        hasAllKeys &= objAllKeys.contains(item);
+        auto& objData{*_obj};
+        objData["mapName"] = QString::fromStdString(map.getName());
+        objData["xSize"] = map.getXSize();
+        objData["ySize"] = map.getYSize();
     }
+
+    _objPoints = std::make_unique<QJsonArray>();
+}
+//--------------------------------------------------------------------------------------------------
+void JsonOp::createPointData(const std::shared_ptr<PointObj>& point)
+{
+    _objSinglePoint = std::make_unique<QJsonObject>();
+
+    auto& objSinglePointData{*_objSinglePoint};
+    objSinglePointData["pointName"] = QString::fromStdString(point->getName());
+    objSinglePointData["xCoord"] = point->getX();
+    objSinglePointData["yCoord"] = point->getY();
+
+    _objPointsConn = std::make_unique<QJsonArray>();
+}
+//--------------------------------------------------------------------------------------------------
+void JsonOp::createPointConnData(const std::pair<uint16_t, uint8_t>& pointSingleConnData)
+{
+    if(nullptr != _objPointsConn)
+    {
+        QJsonObject objConnInfo{};
+        objConnInfo["hashConn"] = pointSingleConnData.first;
+        objConnInfo["costConn"] = pointSingleConnData.second;
+
+        _objPointsConn->push_back(objConnInfo);
+    }
+    else
+    {
+        // Error
+    }
+}
+//--------------------------------------------------------------------------------------------------
+void JsonOp::connectPointToItsData()
+{
+    if((nullptr != _objPointsConn) && (nullptr != _objSinglePoint) &&
+       (nullptr != _objPoints))
+    {
+        (*_objSinglePoint)["pointConns"] = *_objPointsConn;
+        _objPoints->push_back(*_objSinglePoint);
+
+        _objSinglePoint = nullptr;
+        _objPointsConn = nullptr;
+    }
+    else
+    {
+        // Error
+    }
+}
+//--------------------------------------------------------------------------------------------------
+void JsonOp::connectPointsInMapData()
+{
+    if((nullptr != _objPoints) && (nullptr != _obj))
+    {
+        (*_obj)["points"] = *_objPoints;
+
+        _objPoints = nullptr;
+    }
+    else
+    {
+        // Error
+    }
+}
+//--------------------------------------------------------------------------------------------------
+QByteArray JsonOp::getDataToSave()
+{
+    QJsonDocument objDoc{*_obj};
+    return objDoc.toJson();
+}
+//--------------------------------------------------------------------------------------------------
+bool JsonOp::checkAllKeys()
+{
+    //pass for now
+}
+//--------------------------------------------------------------------------------------------------
+void JsonOp::initialActions(const QByteArray fileContent)
+{
+    const QJsonDocument objDoc{QJsonDocument::fromJson(fileContent)};
+
+    _obj = std::make_unique<QJsonObject>(objDoc.object());
+
+// Do check for error later
+//    std::vector<QString> expectedKeys{"mapName", "xSize", "ySize", "points"};
+
+    const auto objAllKeys{_obj->keys()};
+    const bool hasAllKeys{!objAllKeys.empty() && objAllKeys.contains("points")};
 
     if(!hasAllKeys)
     {
@@ -94,11 +125,17 @@ MapaObj JsonOp::loadMap(const std::string mapFile)
     }
     Q_ASSERT(hasAllKeys);
 
-    std::vector<std::shared_ptr<PointObj>> newPoints{};
-    newPoints.reserve(obj["points"].toArray().size());
+    _newPoints->reserve((*_obj)["points"].toArray().size());
+}
+//--------------------------------------------------------------------------------------------------
+std::tuple<const std::string, const uint8_t, const uint8_t, ConnList> JsonOp::loadActions()
+{
+    auto& objData{*_obj};
+
+    ConnList newConnList{};
 
     // To check this warning when have time
-    for(const auto& point : obj["points"].toArray())
+    for(const auto& point : objData["points"].toArray())
     {
         const auto objPoint{point.toObject()};
         auto newPoint{std::make_shared<PointObj>(objPoint["xCoord"].toInt(), objPoint["yCoord"].toInt())};
@@ -114,16 +151,15 @@ MapaObj JsonOp::loadMap(const std::string mapFile)
         }
         newConnList.connectPoints(newPoint->getHash(), pointLoadConns);
 
-        newPoints.emplace_back(std::move(newPoint));
+        _newPoints->emplace_back(std::move(newPoint));
     }
 
-    MapaObj ret{static_cast<uint8_t>(obj["xSize"].toInt()), static_cast<uint8_t>(obj["xSize"].toInt())};
-    ret.setName(obj["mapName"].toString().toStdString());
-    ret.initMap(newPoints, newConnList);
+    const std::tuple<const std::string, const uint8_t, const uint8_t, ConnList>
+            ret{objData["mapName"].toString().toStdString(),
+                static_cast<uint8_t>(objData["xSize"].toInt()),
+                static_cast<uint8_t>(objData["xSize"].toInt()),
+                std::move(newConnList)};
 
     return ret;
 }
 //--------------------------------------------------------------------------------------------------
-
-
-

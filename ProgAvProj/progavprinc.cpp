@@ -57,6 +57,8 @@ void ProgAvPrinc::on_btnTest2_clicked()
 //    mapLoad.PrintConnectEdelems();
 //    qDebug() << QString::fromStdString(mapLoad.getName());
 
+//    JsonOp jsonOperator{};
+//    const auto mapLoad{jsonOperator.loadMap("/home/lvkaz/teste_json_ease.json")};
 
     xmlOp xmlOperator{};
     const auto mapLoad{xmlOperator.loadMap("/home/lvkaz/teste_xml_ease.xml")};

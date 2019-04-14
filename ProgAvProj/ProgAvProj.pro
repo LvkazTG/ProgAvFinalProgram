@@ -27,6 +27,7 @@ CONFIG += c++17
 
 SOURCES += \
         connlist.cpp \
+        formatop.cpp \
         jsonop.cpp \
         main.cpp \
         mapaobj.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
 
 HEADERS += \
         connlist.h \
+        formatop.h \
         jsonop.h \
         mapaobj.h \
         pointconniter.h \

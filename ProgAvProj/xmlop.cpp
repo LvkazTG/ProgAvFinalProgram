@@ -1,131 +1,108 @@
 #include "xmlop.h"
 
-#include <QXmlStreamWriter>
-
-#include <QFile>
-
 #include "mapaobj.h"
 #include "connlist.h"
 
-#include "pointobj.h"
-#include "memory"
-
-#include <QFileDialog>
-
 #include <QDebug>
-
-xmlOp::xmlOp(QObject *parent) : QObject(parent)
+//--------------------------------------------------------------------------------------------------
+xmlOp::xmlOp(QObject *parent) : FormatOp(parent)
 {
 
 }
-
-bool xmlOp::saveMap(const MapaObj& map, const std::string mapFile)
+//--------------------------------------------------------------------------------------------------
+void xmlOp::initialActionsSave()
 {
-    bool ret{true};
+    _contentBuffer = std::make_unique<QByteArray>();
+    _xmlWriter = std::make_unique<QXmlStreamWriter>(_contentBuffer.get());
 
-    QFile saveFile{mapFile.c_str()};
-    saveFile.open(QIODevice::WriteOnly);
+    _xmlWriter->setAutoFormatting(true);
+    _xmlWriter->setAutoFormattingIndent(2);
 
-    QXmlStreamWriter xmlWriter{&saveFile};
-    xmlWriter.setAutoFormatting(true);
-    xmlWriter.setAutoFormattingIndent(2);
-
-    xmlWriter.writeStartDocument();
-
-    xmlWriter.writeStartElement("MapDescrition");
-    xmlWriter.writeStartElement("MapInfo");
-    xmlWriter.writeAttribute("mapName", QString::fromStdString(map.getName()));
-    xmlWriter.writeAttribute("xSize", QString::number(map.getXSize()));
-    xmlWriter.writeAttribute("ySize", QString::number(map.getYSize()));
-
-    xmlWriter.writeStartElement("Points");
-    for(const auto& elemInfos : map.getConnList().getConnectedMap())
-    {
-        const auto& point{map.getPoint(elemInfos.first)};
-        xmlWriter.writeStartElement("Point");
-        xmlWriter.writeAttribute("pointName", QString::fromStdString(point->getName()));
-        xmlWriter.writeAttribute("xCoord", QString::number(point->getX()));
-        xmlWriter.writeAttribute("yCoord", QString::number(point->getY()));
-
-        for(const auto& elemConn : elemInfos.second)
-        {
-            xmlWriter.writeStartElement("PointConn");
-            xmlWriter.writeAttribute("hashConn", QString::number(elemConn.first));
-            xmlWriter.writeAttribute("costConn", QString::number(elemConn.second));
-            xmlWriter.writeEndElement();
-        }
-
-        xmlWriter.writeEndElement();
-
-    }
-
-
-    xmlWriter.writeEndElement();
-    xmlWriter.writeEndElement();
-    xmlWriter.writeEndElement();
-
-    xmlWriter.writeEndDocument();
-
-    saveFile.close();
-
-
-//    QString filename = QFileDialog::getSaveFileName(this,
-//                                       tr("Save Xml"), ".",
-//                                       tr("Xml files (*.xml)"));
-
-
-//    QFile file(filename);
-//    file.open(QIODevice::WriteOnly);
-
-//    QXmlStreamWriter xmlWriter2(&file);
-//    xmlWriter2.setAutoFormatting(true);
-//    xmlWriter2.writeStartDocument();
-
-//    xmlWriter2.writeStartElement("LAMPS");
-
-//    xmlWriter2.writeStartElement("LIGHT1");
-//    xmlWriter2.writeTextElement("State", "statevalue" );
-//    xmlWriter2.writeTextElement("Room", "roomvalue");
-//    xmlWriter2.writeTextElement("Potencial", "potencialvalue");
-
-//    xmlWriter2.writeEndElement();
-
-//    file.close();
-
-    return ret;
+    _xmlWriter->writeStartDocument();
 }
-
-MapaObj xmlOp::loadMap(const std::string mapFile)
+//--------------------------------------------------------------------------------------------------
+void xmlOp::createMapHeaderData(const MapaObj& map)
 {
-    QFile loadFile(mapFile.c_str());
-    loadFile.open(QFile::ReadOnly);
+    _xmlWriter->writeStartElement("MapDescrition");
+    _xmlWriter->writeStartElement("MapInfo");
+    _xmlWriter->writeAttribute("mapName", QString::fromStdString(map.getName()));
+    _xmlWriter->writeAttribute("xSize", QString::number(map.getXSize()));
+    _xmlWriter->writeAttribute("ySize", QString::number(map.getYSize()));
 
-    QXmlStreamReader xmlReader(&loadFile);
+    _xmlWriter->writeStartElement("Points");
+}
+//--------------------------------------------------------------------------------------------------
+void xmlOp::createPointData(const std::shared_ptr<PointObj>& point)
+{
+    _xmlWriter->writeStartElement("Point");
+    _xmlWriter->writeAttribute("pointName", QString::fromStdString(point->getName()));
+    _xmlWriter->writeAttribute("xCoord", QString::number(point->getX()));
+    _xmlWriter->writeAttribute("yCoord", QString::number(point->getY()));
+}
+//--------------------------------------------------------------------------------------------------
+void xmlOp::createPointConnData(const std::pair<uint16_t, uint8_t>& pointSingleConnData)
+{
+    _xmlWriter->writeStartElement("PointConn");
+    _xmlWriter->writeAttribute("hashConn", QString::number(pointSingleConnData.first));
+    _xmlWriter->writeAttribute("costConn", QString::number(pointSingleConnData.second));
+    _xmlWriter->writeEndElement();
+}
+//--------------------------------------------------------------------------------------------------
+void xmlOp::connectPointToItsData()
+{
+    // The sequencial writing of xml ensure connection, but need to close element
+    _xmlWriter->writeEndElement();
+}
+//--------------------------------------------------------------------------------------------------
+void xmlOp::connectPointsInMapData()
+{
+    // The sequencial writing of xml ensure connection, but need to close elements created
+    _xmlWriter->writeEndElement();
+    _xmlWriter->writeEndElement();
+    _xmlWriter->writeEndElement();
 
+    _xmlWriter->writeEndDocument();
+}
+//--------------------------------------------------------------------------------------------------
+QByteArray xmlOp::getDataToSave()
+{
+    return *_contentBuffer;
+}
+//--------------------------------------------------------------------------------------------------
+bool xmlOp::checkAllKeys()
+{
+    //pass for now
+}
+//--------------------------------------------------------------------------------------------------
+void xmlOp::initialActions(const QByteArray fileContent)
+{
+    _xmlReader = std::make_unique<QXmlStreamReader>(fileContent);
+}
+//--------------------------------------------------------------------------------------------------
+std::tuple<const std::string, const uint8_t, const uint8_t, ConnList> xmlOp::loadActions()
+{
     uint8_t mapXSize{0};
     uint8_t mapYSize{0};
     std::string mapName{""};
 
     uint16_t actualHash{0};
-    std::vector<std::shared_ptr<PointObj>> newPoints{};
     ConnList newConnList{};
 
-
-    while(!xmlReader.atEnd())
+    while(!_xmlReader->atEnd())
     {
-        if(!xmlReader.isEndElement())
+        if(!_xmlReader->isEndElement())
         {
-            const auto xmlName{xmlReader.name()};
+            const auto xmlName{_xmlReader->name()};
             if(xmlName == "MapInfo")
             {
-                auto xmlAttrib{xmlReader.attributes()};
+                const auto xmlAttrib{_xmlReader->attributes()};
                 mapName = xmlAttrib.value("mapName").toString().toStdString();
                 mapXSize = static_cast<uint8_t>(xmlAttrib.value("xSize").toInt());
                 mapYSize = static_cast<uint8_t>(xmlAttrib.value("ySize").toInt());
             }
             else if(xmlName == "Point")
             {
-                auto xmlAttrib{xmlReader.attributes()};
+                const auto xmlAttrib{_xmlReader->attributes()};
                 auto newPoint{std::make_shared<PointObj>(xmlAttrib.value("xCoord").toInt(),
                                                          xmlAttrib.value("yCoord").toInt())};
                 newPoint->setName(xmlAttrib.value("pointName").toString().toStdString());
@@ -134,11 +111,11 @@ MapaObj xmlOp::loadMap(const std::string mapFile)
                 // Ensure connList will have elem even if it is not connected to any point
                 newConnList.createEmptyHashEntry(actualHash);
 
-                newPoints.emplace_back(std::move(newPoint));
+                _newPoints->emplace_back(std::move(newPoint));
             }
             else if (xmlName == "PointConn")
             {
-                auto xmlAttrib{xmlReader.attributes()};
+                const auto xmlAttrib{_xmlReader->attributes()};
                 newConnList.connectNewPoint(actualHash,
                                             static_cast<uint16_t>(xmlAttrib.value("hashConn").toInt()),
                                             static_cast<uint8_t>(xmlAttrib.value("costConn").toInt()));
@@ -149,32 +126,13 @@ MapaObj xmlOp::loadMap(const std::string mapFile)
             }
         }
 
-        xmlReader.readNext();
+        _xmlReader->readNext();
     }
 
-    loadFile.close();
+    const std::tuple<const std::string, const uint8_t, const uint8_t, ConnList>
+            ret{std::move(mapName), mapXSize, mapYSize, std::move(newConnList)};
 
-    MapaObj ret{mapXSize, mapYSize};
-    ret.setName(mapName);
-    ret.initMap(newPoints, newConnList);
 
     return ret;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//--------------------------------------------------------------------------------------------------
