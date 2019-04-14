@@ -35,7 +35,7 @@ public:
     const ConnList& getConnList() const;
 
     const std::shared_ptr<PointObj>& getPoint(const uint16_t pointHash) const;
-    const std::shared_ptr<PointObj> getPointByName(const std::string pointName) const;
+    const std::shared_ptr<PointObj> getPointByName(const std::string& pointName) const;
 
 
     void initMap(const std::vector<std::shared_ptr<PointObj>>& points, const ConnList& connList);

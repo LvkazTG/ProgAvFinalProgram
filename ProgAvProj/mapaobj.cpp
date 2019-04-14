@@ -120,7 +120,7 @@ const std::shared_ptr<PointObj>& MapaObj::getPoint(const uint16_t pointHash) con
     return _points.at(pointHash);
 }
 //--------------------------------------------------------------------------------------------------
-const std::shared_ptr<PointObj> MapaObj::getPointByName(const std::string pointName) const
+const std::shared_ptr<PointObj> MapaObj::getPointByName(const std::string& pointName) const
 {
     std::shared_ptr<PointObj> ret{nullptr};
 

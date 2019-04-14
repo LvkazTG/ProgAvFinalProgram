@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++17
 
 SOURCES += \
+        basesearch.cpp \
         connlist.cpp \
         formatop.cpp \
         jsonop.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
         xmlop.cpp
 
 HEADERS += \
+        basesearch.h \
         connlist.h \
         formatop.h \
         jsonop.h \

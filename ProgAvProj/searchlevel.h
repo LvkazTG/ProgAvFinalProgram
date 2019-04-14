@@ -1,34 +1,24 @@
 #ifndef SEARCHLEVEL_H
 #define SEARCHLEVEL_H
 
-#include <list>
-#include <map>
+#include "basesearch.h"
 
-#include "connlist.h"
-#include "mapaobj.h"
-#include "pointconniter.h"
-
-class SearchLevel
+class SearchLevel : public baseSearch
 {
 public:
-    SearchLevel(const MapaObj& map, const std::string startPoint, const std::string endPoint);
+    SearchLevel(const MapaObj& map, const std::string& startPoint, const std::string& endPoint);
 
-    bool init();
+    virtual ~SearchLevel() override = default;
 
-    uint16_t _startHash{0};
-    uint16_t _endHash{0};
+private:
+    virtual void initLoopConditions() override;
+    virtual bool extraCoonditionLoopSearch() const override;
+    virtual void principalLoopSearch() override;
 
-    std::list<PointConnIter> _actualPath{};
-    std::list<PointConnIter> _bestPath{};
+    std::list<PointConnIter> _startingPath{};
+    uint64_t _actuallvlSearch{0};
+    const uint64_t _maxlvlSearch{500};
 
-    uint64_t _actualPathCost{0};
-    uint64_t _bestPathCost{0};
-
-    ConnList const* _connMapList{nullptr};
-
-    private:
-        void calculateActualCost();
-        bool validRoute() const;
 
 };
 

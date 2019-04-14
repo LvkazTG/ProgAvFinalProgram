@@ -4,175 +4,103 @@
 
 #include <QDebug>
 #include "pointobj.h"
-static MapaObj const* bla{nullptr};
+#include "mapaobj.h"
 
-SearchLevel::SearchLevel(const MapaObj& map, const std::string startPoint, const std::string endPoint) :
-    _bestPathCost{std::numeric_limits<uint64_t>::max()}
+SearchLevel::SearchLevel(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
+    baseSearch(map, startPoint, endPoint)
 {
-    bla = &map;
 
-    const auto startElem{map.getPointByName(startPoint)};
-    if(startElem != nullptr)
-    {
-        _startHash = startElem->getHash();
-    }
-
-    const auto endElem{map.getPointByName(endPoint)};
-    if(endElem != nullptr)
-    {
-        _endHash = endElem->getHash();
-    }
-
-    _connMapList = &map.getConnList();
 }
 
-
-bool SearchLevel::init()
+void SearchLevel::initLoopConditions()
 {
-    bool ret{false};
+    _startingPath = _actualPath;
 
-    _actualPath.emplace_back(_startHash, _connMapList->getConnectedMapElem(_startHash));
+    _actuallvlSearch = 1;
+}
 
-    auto startingPath{_actualPath};
+bool SearchLevel::extraCoonditionLoopSearch() const
+{
+    return (_maxlvlSearch > _actuallvlSearch);
+}
 
-    qDebug() << "First Conn hash" << _actualPath.begin()->getActualConnHash();
+void SearchLevel::principalLoopSearch()
+{
+    _keepSearchGoing = false;
 
-    bool keepSearchGoing{_startHash != _endHash};
-    if(!keepSearchGoing)
+    _actuallvlSearch++;
+    while(_startingPath.size() < _actuallvlSearch)
     {
-        _bestPath = _actualPath;
-        _bestPathCost = 0;
+        const auto newConnHash{_startingPath.rbegin()->getActualConnHash()};
+        _startingPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
     }
 
-    uint64_t lvlSearch{1};
+    _actualPath = _startingPath;
 
-    const uint64_t maxlvlSearch{500};
-
-    while(keepSearchGoing && (maxlvlSearch > lvlSearch))
+    while(true)
     {
-        keepSearchGoing = false;
-
-        lvlSearch++;
-        while(startingPath.size() < lvlSearch)
+        auto actualElemIter{_actualPath.rbegin()};
+        if(actualElemIter->getPointHash() != _endHash)
         {
-            const auto newConnHash{startingPath.rbegin()->getActualConnHash()};
-            startingPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
+            _keepSearchGoing |= validRoute();
+
+        }
+        else
+        {
+            calculateActualCost();
+
+            // If solution is better
+            if(_actualPathCost < _bestPathCost)
+            {
+                _bestPathCost = _actualPathCost;
+                _bestPath = _actualPath;
+
+                // If found best path, search still has meaning
+                _keepSearchGoing = true;
+            }
         }
 
-        _actualPath = startingPath;
-
-        while(true)
+        actualElemIter++;
+        _actualPath.pop_back();
+        if(actualElemIter->moveNext())
         {
-            auto actualElemIter{_actualPath.rbegin()};
-            if(actualElemIter->getPointHash() != _endHash)
+            const auto newConnHash{actualElemIter->getActualConnHash()};
+            _actualPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
+        }
+        else
+        {
+            auto iterRedo{_actualPath.begin()};
+
+            for(auto iterCheck = _actualPath.begin() ;
+                _actualPath.end() != iterCheck ; iterCheck++)
             {
-                keepSearchGoing |= validRoute();
-
-            }
-            else
-            {
-                calculateActualCost();
-
-                // If solution is better
-                if(_actualPathCost < _bestPathCost)
+                if(iterCheck->isOnLastValidIter())
                 {
-                    _bestPathCost = _actualPathCost;
-                    _bestPath = _actualPath;
-
-                    // If found best path, search still has meaning
-                    keepSearchGoing = true;
-                }
-            }
-
-            actualElemIter++;
-            _actualPath.pop_back();
-            if(actualElemIter->moveNext())
-            {
-                const auto newConnHash{actualElemIter->getActualConnHash()};
-                _actualPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
-            }
-            else
-            {
-                auto iterRedo{_actualPath.begin()};
-
-                for(auto iterCheck = _actualPath.begin() ;
-                    _actualPath.end() != iterCheck ; iterCheck++)
-                {
-                    if(iterCheck->isOnLastValidIter())
-                    {
-                        iterRedo = iterCheck;
-                        break;
-                    }
-                }
-
-                if(_actualPath.begin() != iterRedo)
-                {
-                    auto iterBeforeRedo{std::prev(iterRedo)};
-
-                    // Should always be valid
-                    Q_ASSERT(iterBeforeRedo->moveNext());
-                    _actualPath.erase(std::next(iterBeforeRedo), _actualPath.end());
-                }
-                else
-                {
-                    // Finish this lvl
+                    iterRedo = iterCheck;
                     break;
                 }
+            }
 
-                // REDO route to lvl search
-                while(_actualPath.size() < lvlSearch)
-                {
-                    const auto newConnHash{_actualPath.rbegin()->getActualConnHash()};
-                    _actualPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
-                }
+            if(_actualPath.begin() != iterRedo)
+            {
+                auto iterBeforeRedo{std::prev(iterRedo)};
+
+                // Should always be valid
+                Q_ASSERT(iterBeforeRedo->moveNext());
+                _actualPath.erase(std::next(iterBeforeRedo), _actualPath.end());
+            }
+            else
+            {
+                // Finish this lvl
+                break;
+            }
+
+            // REDO route to lvl search
+            while(_actualPath.size() < _actuallvlSearch)
+            {
+                const auto newConnHash{_actualPath.rbegin()->getActualConnHash()};
+                _actualPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
             }
         }
     }
-
-    ret = !_bestPath.empty();
-
-    qDebug() << "Final route if any\n";
-    for(const auto& elemIt : _bestPath)
-    {
-        qDebug() << "Point " << QString::fromStdString(bla->getPoint(elemIt.getPointHash())->getName()) << " " << "Hash " << elemIt.getPointHash() << "Cost " << elemIt.getActualConnCost();
-    }
-    qDebug() << "\n Cost " << _bestPathCost;
-
-
-    return ret;
-}
-
-void SearchLevel::calculateActualCost()
-{
-    _actualPathCost = 0;
-
-//    qDebug() << "List size " << _actualPath.size();
-    for(auto it{_actualPath.begin()} ; _actualPath.end() != it ; it++)
-    {
-        const auto itNext{std::next(it)};
-        if(itNext == _actualPath.end())
-        {
-            break;
-        }
-
-        _actualPathCost += it->getActualConnCost();
-//        qDebug() << "new cost "<< _actualPathCost;
-    }
-}
-
-bool SearchLevel::validRoute() const
-{
-    std::set<uint16_t> nonRepPath{};
-
-    std::vector<uint16_t> hashesPath{};
-    hashesPath.reserve(_actualPath.size());
-
-    for(const auto& elem : _actualPath)
-    {
-        const auto elemHash{elem.getPointHash()};
-        hashesPath.push_back(elemHash);
-        nonRepPath.insert(elemHash);
-    }
-
-    return nonRepPath.size() == hashesPath.size();
 }
