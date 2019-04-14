@@ -35,6 +35,7 @@ SOURCES += \
         pointobj.cpp \
         progavprinc.cpp \
         searchdeep.cpp \
+        searchlevel.cpp \
         xmlop.cpp
 
 HEADERS += \
@@ -46,6 +47,7 @@ HEADERS += \
         pointobj.h \
         progavprinc.h \
         searchdeep.h \
+        searchlevel.h \
         xmlop.h
 
 FORMS += \

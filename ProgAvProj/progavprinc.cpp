@@ -7,6 +7,7 @@
 #include "xmlop.h"
 
 #include "searchdeep.h"
+#include "searchlevel.h"
 
 #include <QDebug>
 
@@ -75,6 +76,18 @@ void ProgAvPrinc::on_btnTest2_clicked()
     else
     {
         qDebug() << "Fail, bad choice?";
+    }
+
+    SearchLevel searchLvlTry{mapLoad, "point_1_4", "point_4_1"};;
+    bool returned2{searchLvlTry.init()};
+
+    if(returned2)
+    {
+        qDebug() << "Very good2";
+    }
+    else
+    {
+        qDebug() << "Fail, bad choice?2";
     }
 
 }
