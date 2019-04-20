@@ -8,6 +8,7 @@
 
 #include "searchdeep.h"
 #include "searchlevel.h"
+#include "searchastart.h"
 
 #include <QDebug>
 
@@ -44,23 +45,6 @@ void ProgAvPrinc::on_btnTest_clicked()
 void ProgAvPrinc::on_btnTest2_clicked()
 {
     qDebug() << "2- Lets say Hello!";
-
-//    JsonOp jsonOperator{};
-//    const auto mapLoad{jsonOperator.loadMap("/home/lvkaz/teste_json.json")};
-//    mapLoad.PrintConnectEdelems();
-//    qDebug() << QString::fromStdString(mapLoad.getName());
-
-//    xmlOp xmlOperator{};
-//    xmlOperator.saveMap(mapLoad, "/home/lvkaz/teste_xml.xml");
-
-//    xmlOp xmlOperator{};
-//    const auto mapLoad{xmlOperator.loadMap("/home/lvkaz/teste_xml.xml")};
-//    mapLoad.PrintConnectEdelems();
-//    qDebug() << QString::fromStdString(mapLoad.getName());
-
-//    JsonOp jsonOperator{};
-//    const auto mapLoad{jsonOperator.loadMap("/home/lvkaz/teste_json_ease.json")};
-
     xmlOp xmlOperator{};
     const auto mapLoad{xmlOperator.loadMap("/home/lvkaz/teste_xml_ease.xml")};
     mapLoad.PrintConnectEdelems();
@@ -88,6 +72,18 @@ void ProgAvPrinc::on_btnTest2_clicked()
     else
     {
         qDebug() << "Fail, bad choice?2";
+    }
+
+    searchAStart searchAStarTry{mapLoad, "point_1_4", "point_4_1"};;
+    bool returned3{searchAStarTry.init()};
+
+    if(returned3)
+    {
+        qDebug() << "Very good3";
+    }
+    else
+    {
+        qDebug() << "Fail, bad choice?3";
     }
 
 }

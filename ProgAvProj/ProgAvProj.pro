@@ -35,6 +35,7 @@ SOURCES += \
         pointconniter.cpp \
         pointobj.cpp \
         progavprinc.cpp \
+        searchastart.cpp \
         searchdeep.cpp \
         searchlevel.cpp \
         xmlop.cpp
@@ -48,6 +49,7 @@ HEADERS += \
         pointconniter.h \
         pointobj.h \
         progavprinc.h \
+        searchastart.h \
         searchdeep.h \
         searchlevel.h \
         xmlop.h

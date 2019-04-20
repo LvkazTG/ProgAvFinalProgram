@@ -22,6 +22,9 @@ public:
 
     void viewAllConnHashes() const;
 
+    bool moveUntilFind(const uint16_t searchPointHash);
+    bool moveUntilFind(const uint16_t searchPointHash, const bool reset);
+
 private:
     // This being const interfere with copy constructor
     uint16_t _pointHash{0};

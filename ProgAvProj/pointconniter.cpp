@@ -72,6 +72,45 @@ void PointConnIter::viewAllConnHashes() const
         qDebug() << "Conn hash " << bla.first;
     }
 }
+//--------------------------------------------------------------------------------------------------
+bool PointConnIter::moveUntilFind(const uint16_t searchPointHash)
+{
+    bool ret{false};
+
+    while(!isAtEnd())
+    {
+        if(searchPointHash == _actualIter->first)
+        {
+            ret = true;
+            break;
+        }
+        else
+        {
+            moveNext();
+        }
+    }
+
+    return ret;
+}
+//--------------------------------------------------------------------------------------------------
+bool PointConnIter::moveUntilFind(const uint16_t searchPointHash, const bool reset)
+{
+    if(reset)
+    {
+        _actualIter = _conns->begin();
+    }
+
+    const bool ret{moveUntilFind(searchPointHash)};
+
+    if(!ret)
+    {
+        _actualIter = _conns->begin();
+    }
+
+    return ret;
+}
+//--------------------------------------------------------------------------------------------------
+
 
 
 
