@@ -9,6 +9,7 @@
 #include "searchdeep.h"
 #include "searchlevel.h"
 #include "searchastart.h"
+#include "searchgraphplanadapt.h"
 
 #include <QDebug>
 
@@ -33,7 +34,7 @@ void ProgAvPrinc::on_btnTest_clicked()
 {
     qDebug() << "1 - Lets say Hello!";
 
-    MapaObj prinMap{5, 5};
+    MapaObj prinMap{10, 10};
     prinMap.createNew();
 //    MapaObj prinMap{};
     prinMap.PrintConnectEdelems();
@@ -89,6 +90,19 @@ void ProgAvPrinc::on_btnTest2_clicked()
     else
     {
         qDebug() << "Fail, bad choice?3";
+    }
+
+
+    SearchGraphplanAdapt searchGraphplanTry{mapLoad, "point_1_4", "point_4_1"};;
+    bool returned4{searchGraphplanTry.init()};
+
+    if(returned4)
+    {
+        qDebug() << "Very good4";
+    }
+    else
+    {
+        qDebug() << "Fail, bad choice?4";
     }
 
 }

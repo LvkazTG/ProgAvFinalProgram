@@ -38,6 +38,7 @@ SOURCES += \
         progavprinc.cpp \
         searchastart.cpp \
         searchdeep.cpp \
+        searchgraphplanadapt.cpp \
         searchlevel.cpp \
         xmlop.cpp
 
@@ -53,6 +54,7 @@ HEADERS += \
         progavprinc.h \
         searchastart.h \
         searchdeep.h \
+        searchgraphplanadapt.h \
         searchlevel.h \
         xmlop.h
 
