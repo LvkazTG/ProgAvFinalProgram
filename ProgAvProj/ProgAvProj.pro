@@ -32,6 +32,7 @@ SOURCES += \
         jsonop.cpp \
         main.cpp \
         mapaobj.cpp \
+        mappaint.cpp \
         pointconniter.cpp \
         pointobj.cpp \
         progavprinc.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
         formatop.h \
         jsonop.h \
         mapaobj.h \
+        mappaint.h \
         pointconniter.h \
         pointobj.h \
         progavprinc.h \

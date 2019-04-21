@@ -12,6 +12,11 @@
 
 #include <QDebug>
 
+#include "mappaint.h"
+
+#include <QDialog>
+//#include <QPainter>
+
 ProgAvPrinc::ProgAvPrinc(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ProgAvPrinc)
@@ -87,3 +92,38 @@ void ProgAvPrinc::on_btnTest2_clicked()
     }
 
 }
+
+void ProgAvPrinc::on_btnTest3_clicked()
+{
+    xmlOp xmlOperator{};
+//    const auto mapLoad{xmlOperator.loadMap("/home/lvkaz/teste_xml_ease.xml")};
+    _mapLoad = new MapaObj{xmlOperator.loadMap("/home/lvkaz/teste_xml_ease.xml")};
+
+    MapPaint* mapPaintDlg{new MapPaint{_mapLoad, this}};
+    mapPaintDlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    mapPaintDlg->show();
+
+    QDialog* bla{new QDialog{this}};
+    bla->setAttribute(Qt::WA_DeleteOnClose);
+
+    QGridLayout* ble{new QGridLayout{bla}};
+    ble->addWidget(mapPaintDlg);
+
+    bla->setLayout(ble);
+    bla->show();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -164,7 +164,11 @@ void MapaObj::initMap(std::map<uint16_t, std::shared_ptr<PointObj>> points, Conn
     _connectedList = std::move(connList);
 }
 //--------------------------------------------------------------------------------------------------
-
+const std::map<uint16_t, std::shared_ptr<PointObj>>& MapaObj::getAllPoints() const
+{
+    return _points;
+}
+//--------------------------------------------------------------------------------------------------
 
 
 

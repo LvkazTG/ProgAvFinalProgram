@@ -40,7 +40,11 @@ public:
 
     void initMap(const std::vector<std::shared_ptr<PointObj>>& points, const ConnList& connList);
 
+    const std::map<uint16_t, std::shared_ptr<PointObj>>& getAllPoints() const;
+
     std::map<uint16_t, std::shared_ptr<PointObj>> _points{};
+
+
 
 private:
     void createConnectionsMatrix();

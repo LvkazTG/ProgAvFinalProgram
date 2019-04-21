@@ -15,6 +15,13 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="0">
+     <widget class="QPushButton" name="btnTest2">
+      <property name="text">
+       <string>Test2 - Load</string>
+      </property>
+     </widget>
+    </item>
     <item row="1" column="0">
      <widget class="QPushButton" name="btnTest">
       <property name="text">
@@ -29,10 +36,10 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QPushButton" name="btnTest2">
+    <item row="3" column="0">
+     <widget class="QPushButton" name="btnTest3">
       <property name="text">
-       <string>Test2 - Load</string>
+       <string>Test3 - Draw</string>
       </property>
      </widget>
     </item>
