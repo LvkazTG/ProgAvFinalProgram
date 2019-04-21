@@ -3,7 +3,7 @@
 
 PointObj::PointObj(const uint8_t newX, const uint8_t newY) : _xCoord{newX}, _yCoord{newY}
 {
-    _pHash = (static_cast<uint16_t>(_xCoord << 8)) | _yCoord;
+    _pHash = calcHash(_xCoord, _yCoord);
 
     //Debug
     createFakeName();
@@ -42,4 +42,9 @@ void PointObj::setName(const std::string& newName)
 void PointObj::createFakeName()
 {
     _pName = "point_" + std::to_string(_xCoord) + "_" + std::to_string(_yCoord);
+}
+
+uint16_t PointObj::calcHash(const uint8_t xCoord, const uint8_t yCoord)
+{
+    return ((static_cast<uint16_t>(xCoord << 8)) | yCoord);
 }

@@ -18,6 +18,8 @@
 #include <QDialog>
 //#include <QPainter>
 
+#include "searchmanual.h"
+
 ProgAvPrinc::ProgAvPrinc(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ProgAvPrinc)
@@ -128,7 +130,18 @@ void ProgAvPrinc::on_btnTest3_clicked()
     bla->show();
 }
 
+void ProgAvPrinc::on_btnTest4_clicked()
+{
+    xmlOp xmlOperator{};
+//    const auto mapLoad{xmlOperator.loadMap("/home/lvkaz/teste_xml_ease.xml")};
+    _mapLoad = new MapaObj{xmlOperator.loadMap("/home/lvkaz/teste_xml_ease.xml")};
 
+    SearchManual* testManual{new SearchManual{_mapLoad, this}};
+    testManual->setAttribute(Qt::WA_DeleteOnClose);
+
+    testManual->show();
+
+}
 
 
 

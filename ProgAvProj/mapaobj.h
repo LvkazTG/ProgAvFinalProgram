@@ -35,6 +35,7 @@ public:
     const ConnList& getConnList() const;
 
     const std::shared_ptr<PointObj>& getPoint(const uint16_t pointHash) const;
+    const std::shared_ptr<PointObj>& getPointByCoord(const uint8_t xCoord, const uint8_t yCoord) const;
     const std::shared_ptr<PointObj> getPointByName(const std::string& pointName) const;
 
 

@@ -20,8 +20,9 @@ public:
     const std::string& getName();
     void setName(const std::string& newName);
 
-
     double distFrom(const PointObj& otherPoint) const;
+
+    static uint16_t calcHash(const uint8_t xCoord, const uint8_t yCoord);
 
 //    void connectPoints(const std::map<uint16_t, uint8_t>& newConns);
 //    void connectPoints(const std::vector<std::tuple<uint8_t, uint16_t>>& newConns);
