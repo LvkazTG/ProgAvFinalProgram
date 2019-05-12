@@ -9,18 +9,15 @@ class MapPaint : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MapPaint(const MapaObj* map, QWidget *parent = nullptr);
+    explicit MapPaint(QWidget *parent = nullptr);
 
-signals:
-
-public slots:
-
+    void addMap(const MapaObj* map);
 
 protected:
     void paintEvent(QPaintEvent *);
 
 private:
-    const MapaObj* _map;
+    MapaObj const* _map{nullptr};
 };
 
 #endif // MAPPAINT_H

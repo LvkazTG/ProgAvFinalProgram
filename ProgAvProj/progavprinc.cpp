@@ -19,6 +19,8 @@
 
 #include <QFileDialog>
 
+#include "mapvisual.h"
+
 ProgAvPrinc::ProgAvPrinc(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ProgAvPrinc)
@@ -78,19 +80,17 @@ void ProgAvPrinc::on_btnSManual_clicked()
 
 void ProgAvPrinc::on_btnViewMap_clicked()
 {
-    MapPaint* mapPaintDlg{new MapPaint{&(*_mapLoad), this}};
-    mapPaintDlg->setAttribute(Qt::WA_DeleteOnClose);
+    if(nullptr != _mapLoad)
+    {
+        MapVisual* mapVisualDlg{new MapVisual{&(*_mapLoad), this}};
+        mapVisualDlg->setAttribute(Qt::WA_DeleteOnClose);
 
-    mapPaintDlg->show();
-
-    QDialog* bla{new QDialog{this}};
-    bla->setAttribute(Qt::WA_DeleteOnClose);
-
-    QGridLayout* ble{new QGridLayout{bla}};
-    ble->addWidget(mapPaintDlg);
-
-    bla->setLayout(ble);
-    bla->show();
+        mapVisualDlg->show();
+    }
+    else
+    {
+        // Warn user
+    }
 }
 
 

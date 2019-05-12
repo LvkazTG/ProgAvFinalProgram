@@ -33,6 +33,7 @@ SOURCES += \
         main.cpp \
         mapaobj.cpp \
         mappaint.cpp \
+        mapvisual.cpp \
         pointconniter.cpp \
         pointobj.cpp \
         progavprinc.cpp \
@@ -51,6 +52,7 @@ HEADERS += \
         jsonop.h \
         mapaobj.h \
         mappaint.h \
+        mapvisual.h \
         pointconniter.h \
         pointobj.h \
         progavprinc.h \
@@ -63,6 +65,7 @@ HEADERS += \
         xmlop.h
 
 FORMS += \
+        mapvisual.ui \
         progavprinc.ui \
         searchmanual.ui
 
