@@ -50,7 +50,6 @@ void SearchManual::addOptions(const std::shared_ptr<PointObj>& startPoint)
     }
 }
 
-
 void SearchManual::on_btnSelect_clicked()
 {
     // It gets items in order

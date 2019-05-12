@@ -28,6 +28,8 @@ SearchResultDlg::SearchResultDlg(const MapaObj* map,const std::shared_ptr<BaseSe
 
     // Remove last line cost
     ui->tblPath->item((ui->tblPath->rowCount()-1),3)->setData(0, "");
+
+    ui->routePaint->addRouteAndMap(&searchUsing->getBestPath(), map);
 }
 
 SearchResultDlg::~SearchResultDlg()

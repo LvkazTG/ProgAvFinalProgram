@@ -37,6 +37,7 @@ SOURCES += \
         pointconniter.cpp \
         pointobj.cpp \
         progavprinc.cpp \
+        routeresultpaint.cpp \
         searchastart.cpp \
         searchdeep.cpp \
         searchgraphplanadapt.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
         pointconniter.h \
         pointobj.h \
         progavprinc.h \
+        routeresultpaint.h \
         searchastart.h \
         searchdeep.h \
         searchgraphplanadapt.h \

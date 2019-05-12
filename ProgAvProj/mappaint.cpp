@@ -38,8 +38,8 @@ void MapPaint::paintEvent(QPaintEvent *)
             {
                 const auto& secondPoint{_map->getPoint(connectedData.first)};
                 paintTool.drawLine(firstPoint->getX()*separatorMultiplier,
-                                   secondPoint->getX()*separatorMultiplier,
                                    firstPoint->getY()*separatorMultiplier,
+                                   secondPoint->getX()*separatorMultiplier,
                                    secondPoint->getY()*separatorMultiplier);
             }
         }

@@ -6,24 +6,77 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>565</width>
-    <height>428</height>
+    <width>615</width>
+    <height>653</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="1,1,1,1,4,1,7,1">
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
    <item row="2" column="1">
-    <widget class="QLineEdit" name="lnMapName"/>
+    <widget class="QLineEdit" name="lnMapName">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QLineEdit" name="lnTotalCost"/>
+    <widget class="QLineEdit" name="lnTotalCost">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="2">
+    <widget class="QPushButton" name="btnClose">
+     <property name="text">
+      <string>Back</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>595</width>
+        <height>270</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="RouteResultPaint" name="routePaint" native="true"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="lblSearchType">
      <property name="text">
       <string>Search type:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QLabel" name="lblRoute">
+     <property name="text">
+      <string>Route</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -39,7 +92,11 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QLineEdit" name="lnSearchType"/>
+    <widget class="QLineEdit" name="lnSearchType">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="lblMapName">
@@ -65,15 +122,16 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
-    <widget class="QPushButton" name="btnClose">
-     <property name="text">
-      <string>Back</string>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RouteResultPaint</class>
+   <extends>QWidget</extends>
+   <header>routeresultpaint.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
