@@ -48,25 +48,25 @@ void ProgAvPrinc::on_btnCreateLoadMap_clicked()
 
 void ProgAvPrinc::on_btnSDeep_clicked()
 {
-    _searchMethod = std::make_shared<SearchDeep>(*_mapLoad, "point_1_4", "point_4_1");
+    _searchMethod = std::make_shared<SearchDeep>(*_mapLoad);
     startSearch();
 }
 
 void ProgAvPrinc::on_btnSLevel_clicked()
 {
-    _searchMethod = std::make_shared<SearchLevel>(*_mapLoad, "point_1_4", "point_4_1");
+    _searchMethod = std::make_shared<SearchLevel>(*_mapLoad);
     startSearch();
 }
 
 void ProgAvPrinc::on_btnSAStar_clicked()
 {
-    _searchMethod = std::make_shared<searchAStart>(*_mapLoad, "point_1_4", "point_4_1");
+    _searchMethod = std::make_shared<searchAStart>(*_mapLoad);
     startSearch();
 }
 
 void ProgAvPrinc::on_btnSGraphPlan_clicked()
 {
-    _searchMethod = std::make_shared<SearchGraphplanAdapt>(*_mapLoad, "point_1_4", "point_4_1");
+    _searchMethod = std::make_shared<SearchGraphplanAdapt>(*_mapLoad);
     startSearch();
 }
 

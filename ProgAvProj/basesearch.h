@@ -12,13 +12,17 @@ class MapaObj;
 class BaseSearch
 {
 public:
-    BaseSearch(const MapaObj& map, const std::string& startPoint, const std::string& endPoint);
+    BaseSearch(const MapaObj& map);
 
     virtual ~BaseSearch() = default;
 
     bool init();
 
     const SearchStatistics& getSearchStatistics() const;
+
+    const std::string& getSearchType();
+
+    void definePoints(const uint16_t startP, const uint16_t endP);
 
 protected:
     void calculateActualCost();

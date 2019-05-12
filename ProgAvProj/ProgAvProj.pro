@@ -43,6 +43,7 @@ SOURCES += \
         searchlevel.cpp \
         searchmanual.cpp \
         searchstatistics.cpp \
+        searchuserstart.cpp \
         xmlop.cpp
 
 HEADERS += \
@@ -62,12 +63,14 @@ HEADERS += \
         searchlevel.h \
         searchmanual.h \
         searchstatistics.h \
+        searchuserstart.h \
         xmlop.h
 
 FORMS += \
         mapvisual.ui \
         progavprinc.ui \
-        searchmanual.ui
+        searchmanual.ui \
+        searchuserstart.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

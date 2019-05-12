@@ -6,8 +6,7 @@
 
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
-SearchGraphplanAdapt::SearchGraphplanAdapt(const MapaObj& map, const std::string& startPoint,
-                                           const std::string& endPoint) : BaseSearch(map, startPoint, endPoint)
+SearchGraphplanAdapt::SearchGraphplanAdapt(const MapaObj& map) : BaseSearch{map}
 {
 }
 //--------------------------------------------------------------------------------------------------

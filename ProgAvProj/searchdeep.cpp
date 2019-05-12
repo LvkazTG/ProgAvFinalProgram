@@ -4,8 +4,7 @@
 
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
-SearchDeep::SearchDeep(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
-    BaseSearch(map, startPoint, endPoint)
+SearchDeep::SearchDeep(const MapaObj& map) : BaseSearch{map}
 {
 
 }

@@ -6,8 +6,7 @@
 class searchAStart : public BaseSearch
 {
 public:
-    searchAStart(const MapaObj& map, const std::string& startPoint,
-                 const std::string& endPoint);
+    searchAStart(const MapaObj& map);
 
     virtual ~searchAStart() override = default;
 

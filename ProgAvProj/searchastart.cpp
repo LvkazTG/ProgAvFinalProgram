@@ -4,8 +4,7 @@
 
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
-searchAStart::searchAStart(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
-    BaseSearch(map, startPoint, endPoint), _mapInUse{&map}
+searchAStart::searchAStart(const MapaObj& map) : BaseSearch{map}, _mapInUse{&map}
 {
 
 }

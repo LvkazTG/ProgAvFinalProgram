@@ -9,24 +9,17 @@
 
 static MapaObj const* bla{nullptr};
 //--------------------------------------------------------------------------------------------------
-BaseSearch::BaseSearch(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
-    _bestPathCost{std::numeric_limits<uint64_t>::max()}
+BaseSearch::BaseSearch(const MapaObj& map) : _bestPathCost{std::numeric_limits<uint64_t>::max()}
 {
     bla = &map;
 
-    const auto startElem{map.getPointByName(startPoint)};
-    if(startElem != nullptr)
-    {
-        _startHash = startElem->getHash();
-    }
-
-    const auto endElem{map.getPointByName(endPoint)};
-    if(endElem != nullptr)
-    {
-        _endHash = endElem->getHash();
-    }
-
     _connMapList = &map.getConnList();
+}
+//--------------------------------------------------------------------------------------------------
+void BaseSearch::definePoints(const uint16_t startP, const uint16_t endP)
+{
+    _startHash = startP;
+    _endHash = endP;
 }
 //--------------------------------------------------------------------------------------------------
 bool BaseSearch::init()
@@ -138,3 +131,7 @@ const SearchStatistics& BaseSearch::getSearchStatistics() const
     return _searchStats;
 }
 //--------------------------------------------------------------------------------------------------
+const std::string& BaseSearch::getSearchType()
+{
+    return _searchStats.getSearchMethodName();
+}

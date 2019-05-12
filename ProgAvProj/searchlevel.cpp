@@ -5,8 +5,7 @@
 
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
-SearchLevel::SearchLevel(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
-    BaseSearch(map, startPoint, endPoint)
+SearchLevel::SearchLevel(const MapaObj& map) : BaseSearch{map}
 {
 
 }

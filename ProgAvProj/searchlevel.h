@@ -6,7 +6,7 @@
 class SearchLevel : public BaseSearch
 {
 public:
-    SearchLevel(const MapaObj& map, const std::string& startPoint, const std::string& endPoint);
+    SearchLevel(const MapaObj& map);
 
     virtual ~SearchLevel() override = default;
 

@@ -8,8 +8,7 @@
 class SearchGraphplanAdapt : public BaseSearch
 {
 public:
-    SearchGraphplanAdapt(const MapaObj& map, const std::string& startPoint,
-               const std::string& endPoint);
+    SearchGraphplanAdapt(const MapaObj& map);
 
     virtual ~SearchGraphplanAdapt() override = default;
 

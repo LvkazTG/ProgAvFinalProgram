@@ -6,8 +6,7 @@
 class SearchDeep : public BaseSearch
 {
 public:
-    SearchDeep(const MapaObj& map, const std::string& startPoint,
-               const std::string& endPoint);
+    SearchDeep(const MapaObj& map);
 
     virtual ~SearchDeep() override = default;
 
