@@ -42,6 +42,7 @@ SOURCES += \
         searchgraphplanadapt.cpp \
         searchlevel.cpp \
         searchmanual.cpp \
+        searchresultdlg.cpp \
         searchstatistics.cpp \
         searchuserstart.cpp \
         xmlop.cpp
@@ -62,6 +63,7 @@ HEADERS += \
         searchgraphplanadapt.h \
         searchlevel.h \
         searchmanual.h \
+        searchresultdlg.h \
         searchstatistics.h \
         searchuserstart.h \
         xmlop.h
@@ -70,6 +72,7 @@ FORMS += \
         mapvisual.ui \
         progavprinc.ui \
         searchmanual.ui \
+        searchresultdlg.ui \
         searchuserstart.ui
 
 # Default rules for deployment.

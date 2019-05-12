@@ -135,3 +135,14 @@ const std::string& BaseSearch::getSearchType()
 {
     return _searchStats.getSearchMethodName();
 }
+//--------------------------------------------------------------------------------------------------
+const std::list<PointConnIter>& BaseSearch::getBestPath() const
+{
+    return _bestPath;
+}
+//--------------------------------------------------------------------------------------------------
+uint64_t BaseSearch::getBestPathCost() const
+{
+    return _bestPathCost;
+}
+//--------------------------------------------------------------------------------------------------

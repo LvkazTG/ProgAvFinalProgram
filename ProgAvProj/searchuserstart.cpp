@@ -3,6 +3,7 @@
 
 #include "mapaobj.h"
 #include "pointobj.h"
+#include "searchresultdlg.h"
 
 #include <QDebug>
 
@@ -46,11 +47,12 @@ void searchUserStart::on_btnStart_clicked()
 
         if(returned)
         {
-            qDebug() << "Very good4";
+            SearchResultDlg* dlg{new SearchResultDlg{_map, _searchMetUsing, this}};
+            dlg->show();
         }
         else
         {
-            qDebug() << "Fail, bad choice?4";
+            // Warn user
         }
 
         informRunningStop();

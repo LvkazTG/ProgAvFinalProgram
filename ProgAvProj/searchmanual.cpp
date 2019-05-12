@@ -32,17 +32,12 @@ void SearchManual::addRow(QTableWidget* tbl, const std::shared_ptr<PointObj>& po
 {
     const auto lastRow{tbl->rowCount()};
 
-    QTableWidgetItem* startItem0{new QTableWidgetItem{QString::fromStdString(pointInfo->getName())}};
-    QTableWidgetItem* startItem1{new QTableWidgetItem{QString::number(pointInfo->getX())}};
-    QTableWidgetItem* startItem2{new QTableWidgetItem{QString::number(pointInfo->getY())}};
-    QTableWidgetItem* startItem3{new QTableWidgetItem{QString::number(pointCost)}};
-
     tbl->setRowCount(lastRow+1);
 
-    tbl->setItem(lastRow, 0, startItem0);
-    tbl->setItem(lastRow, 1, startItem1);
-    tbl->setItem(lastRow, 2, startItem2);
-    tbl->setItem(lastRow, 3, startItem3);
+    tbl->setItem(lastRow, 0, new QTableWidgetItem{QString::fromStdString(pointInfo->getName())});
+    tbl->setItem(lastRow, 1, new QTableWidgetItem{QString::number(pointInfo->getX())});
+    tbl->setItem(lastRow, 2, new QTableWidgetItem{QString::number(pointInfo->getY())});
+    tbl->setItem(lastRow, 3, new QTableWidgetItem{QString::number(pointCost)});
 }
 
 void SearchManual::addOptions(const std::shared_ptr<PointObj>& startPoint)

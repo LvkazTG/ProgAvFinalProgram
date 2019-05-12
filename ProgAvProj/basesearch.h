@@ -22,6 +22,10 @@ public:
 
     const std::string& getSearchType();
 
+    const std::list<PointConnIter>& getBestPath() const;
+
+    uint64_t getBestPathCost() const;
+
     void definePoints(const uint16_t startP, const uint16_t endP);
 
 protected:
