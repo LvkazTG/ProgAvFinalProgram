@@ -22,7 +22,6 @@ bool PointConnIter::isOnLastValidIter() const
 {
     // Provisory solution
     // It apears going std::next() on .end() locks code
-
     return (isAtEnd() ? true : _conns->end() == std::next(_actualIter));
 }
 //--------------------------------------------------------------------------------------------------
@@ -46,7 +45,7 @@ bool PointConnIter::moveIter(const uint32_t howMuch)
 bool PointConnIter::moveNext()
 {
     bool ret{false};
-    if(!isOnLastValidIter())
+    if(!isAtEnd())
     {
         _actualIter = std::next(_actualIter);
         ret = true;

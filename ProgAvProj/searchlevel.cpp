@@ -6,7 +6,7 @@
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
 SearchLevel::SearchLevel(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
-    baseSearch(map, startPoint, endPoint)
+    BaseSearch(map, startPoint, endPoint)
 {
 
 }
@@ -42,6 +42,8 @@ void SearchLevel::principalLoopSearch()
 
         // Check if is solution
         const auto [isEnd, isLessExpensive] = validateEnd(actualElemIter->getPointHash());
+        _searchStats.addNewPointVisited(actualElemIter->getPointHash());
+
         if(!isEnd)
         {
             _keepSearchGoing |= (isLessExpensive && validRoute());

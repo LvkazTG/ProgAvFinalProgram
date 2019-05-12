@@ -5,7 +5,7 @@
 
 #include <set>
 
-class SearchGraphplanAdapt : public baseSearch
+class SearchGraphplanAdapt : public BaseSearch
 {
 public:
     SearchGraphplanAdapt(const MapaObj& map, const std::string& startPoint,

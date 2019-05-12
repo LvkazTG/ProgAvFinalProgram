@@ -41,6 +41,7 @@ SOURCES += \
         searchgraphplanadapt.cpp \
         searchlevel.cpp \
         searchmanual.cpp \
+        searchstatistics.cpp \
         xmlop.cpp
 
 HEADERS += \
@@ -58,6 +59,7 @@ HEADERS += \
         searchgraphplanadapt.h \
         searchlevel.h \
         searchmanual.h \
+        searchstatistics.h \
         xmlop.h
 
 FORMS += \

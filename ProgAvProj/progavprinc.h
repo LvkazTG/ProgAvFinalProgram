@@ -2,8 +2,10 @@
 #define PROGAVPRINC_H
 
 #include <QMainWindow>
+#include <memory>
 
-class MapaObj;
+#include "mapaobj.h"
+#include "basesearch.h"
 
 namespace Ui {
 class ProgAvPrinc;
@@ -20,13 +22,57 @@ public:
 private:
     Ui::ProgAvPrinc *ui;
 
-    MapaObj* _mapLoad{nullptr};
+    std::shared_ptr<MapaObj> _mapLoad{nullptr};
+    std::shared_ptr<BaseSearch> _searchMethod{nullptr};
+
+    std::string openUserFileChoice();
+    std::string getSaveUserFileChoice();
+
+    void startSearch();
+
 
 private slots:
-    void on_btnTest_clicked();
-    void on_btnTest2_clicked();
-    void on_btnTest3_clicked();
-    void on_btnTest4_clicked();
+    void on_btnCreateLoadMap_clicked();
+
+    void on_btnLoadMapJson_clicked();
+    void on_btnLoadMapXml_clicked();
+
+
+    void on_btnSDeep_clicked();
+    void on_btnSLevel_clicked();
+    void on_btnSAStar_clicked();
+    void on_btnSGraphPlan_clicked();
+    void on_btnSManual_clicked();
+
+    void on_btnSaveMapJson_clicked();
+    void on_btnSaveMapXml_clicked();
+
+    void on_btnSaveStatisticsJson_clicked();
+    void on_btnSaveStatisticsXml_clicked();
+
+
+    void on_btnViewMap_clicked();
+    void on_btnFRoute_clicked();
+
+    void on_btnAbout_clicked();
+
+    void on_btnMapOpt_clicked();
+    void on_btnSearchOpt_clicked();
+    void on_btnVisualOpt_clicked();
+
+    void on_btnSaveMap_clicked();
+    void on_btnLoadMap_clicked();
+    void on_btnSaveStatistics_clicked();
+
+
+    void on_btnBackMap_clicked();
+    void on_btnBackSearch_clicked();
+    void on_btnBackVisual_clicked();
+    void on_btnBackLoadMap_clicked();
+    void on_btnBackSaveMap_clicked();
+    void on_btnBackSaveStat_clicked();
+
+
 };
 
 #endif // PROGAVPRINC_H

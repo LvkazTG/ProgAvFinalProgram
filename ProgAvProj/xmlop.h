@@ -27,6 +27,9 @@ private:
 
     virtual void initialActions(const QByteArray fileContent) override;
 
+    virtual void createStatInfo(const SearchStatistics& statObj) override;
+    virtual void createMapMinimumData(const MapaObj& map) override;
+
     ///
     /// \brief loadActions
     /// \return In order mapName, mapXSize, mapYSize, newConnList

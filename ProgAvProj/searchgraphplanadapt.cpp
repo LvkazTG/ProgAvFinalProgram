@@ -7,7 +7,7 @@
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
 SearchGraphplanAdapt::SearchGraphplanAdapt(const MapaObj& map, const std::string& startPoint,
-                                           const std::string& endPoint) : baseSearch(map, startPoint, endPoint)
+                                           const std::string& endPoint) : BaseSearch(map, startPoint, endPoint)
 {
 }
 //--------------------------------------------------------------------------------------------------
@@ -54,6 +54,7 @@ void SearchGraphplanAdapt::principalLoopSearch()
                 while(!pointInfoIter.isAtEnd())
                 {
                     newStatesEncontered.insert(pointInfoIter.getActualConnHash());
+                    _searchStats.addNewPointVisited(pointInfoIter.getActualConnHash());
 
                     if(pointInfoIter.isOnLastValidIter())
                     {

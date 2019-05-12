@@ -5,7 +5,7 @@
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
 searchAStart::searchAStart(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
-    baseSearch(map, startPoint, endPoint), _mapInUse{&map}
+    BaseSearch(map, startPoint, endPoint), _mapInUse{&map}
 {
 
 }
@@ -35,6 +35,9 @@ void searchAStart::principalLoopSearch()
     {
         const auto pointChecking{_toCheckPoints.extract(_toCheckPoints.begin())};
         const auto pointCheckingHash{std::get<0>(pointChecking.mapped())};
+
+        _searchStats.addNewPointVisited(pointCheckingHash);
+
         const auto pointCheckingCost{std::get<1>(pointChecking.mapped())};
 
         const auto iterVisitedListPoint{_visitedPoints.find(pointCheckingHash)};
@@ -54,7 +57,6 @@ void searchAStart::principalLoopSearch()
                 const std::tuple<uint64_t, uint16_t> infoVisitedPoint{pointCheckingCost,
                                                                       std::get<2>(pointChecking.mapped())};
                 _visitedPoints.emplace(pointCheckingHash, infoVisitedPoint);
-
 
                 updateBestPath(pointCheckingHash, pointCheckingCost);
             }
@@ -141,6 +143,7 @@ void searchAStart::updateBestPath(const uint16_t lastPointHash, const uint64_t e
 //    _actualPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
     auto addHash{lastPointHash};
 
+    _bestPath.clear();
     while(addHash != _startHash)
     {
         _bestPath.emplace_front(addHash, _connMapList->getConnectedMapElem(addHash));
@@ -155,7 +158,7 @@ void searchAStart::updateBestPath(const uint16_t lastPointHash, const uint64_t e
 
     uint64_t bestCostSum{0};
 
-    for(auto iterSingleElem  = _bestPath.begin() ; _bestPath.end() != iterSingleElem ; iterSingleElem++)
+    for(auto iterSingleElem = _bestPath.begin() ; _bestPath.end() != iterSingleElem ; iterSingleElem++)
     {
         const auto iterNextElem{std::next(iterSingleElem)};
 
@@ -164,7 +167,7 @@ void searchAStart::updateBestPath(const uint16_t lastPointHash, const uint64_t e
             break;
         }
 
-        const bool foundHash{iterSingleElem->moveUntilFind(iterNextElem->getPointHash())};
+        const bool foundHash{iterSingleElem->moveUntilFind(iterNextElem->getPointHash(), true)};
 
         // Should never fail
         Q_ASSERT(foundHash);

@@ -4,29 +4,16 @@
 
 #include "mapaobj.h"
 #include "connlist.h"
+#include "searchstatistics.h"
 //--------------------------------------------------------------------------------------------------
 FormatOp::FormatOp(QObject *parent) : QObject{parent}
 {
 
 }
 //--------------------------------------------------------------------------------------------------
-bool FormatOp::saveMap(const MapaObj& map, const std::string mapFile)
+bool FormatOp::saveMap(const MapaObj& map, const std::string& mapFile)
 {
-    bool ret{true};
-
-    const auto contentToSave{generateContentToSave(map)};
-
-    QFile saveFile{QString::fromStdString(mapFile)};
-    saveFile.open(QIODevice::WriteOnly);
-    const auto quantWrite{saveFile.write(contentToSave)};
-    saveFile.close();
-
-    if(quantWrite <= 0)
-    {
-       ret = false;
-    }
-
-    return ret;
+    return execSaveOperations(mapFile, generateContentToSaveMap(map));
 }
 //--------------------------------------------------------------------------------------------------
 MapaObj FormatOp::loadMap(const std::string mapFile)
@@ -44,7 +31,7 @@ MapaObj FormatOp::loadMap(const std::string mapFile)
     return generateLoadContent(fileContent);
 }
 //--------------------------------------------------------------------------------------------------
-QByteArray FormatOp::generateContentToSave(const MapaObj& map)
+QByteArray FormatOp::generateContentToSaveMap(const MapaObj& map)
 {
     initialActionsSave();
     createMapHeaderData(map);
@@ -79,3 +66,50 @@ MapaObj FormatOp::generateLoadContent(const QByteArray fileContent)
     return ret;
 }
 //--------------------------------------------------------------------------------------------------
+bool FormatOp::saveStatistics(const SearchStatistics& statObj, const MapaObj& actualMap,
+                              const std::string& statFile)
+{
+    return execSaveOperations(statFile, generateContentToSaveStatistics(statObj, actualMap));
+}
+//--------------------------------------------------------------------------------------------------
+QByteArray FormatOp::generateContentToSaveStatistics(const SearchStatistics& statObj,
+                                                     const MapaObj& actualMap)
+{
+    initialActionsSave();
+    createMapMinimumData(actualMap);
+    createStatInfo(statObj);
+
+    return getDataToSave();
+}
+//--------------------------------------------------------------------------------------------------
+bool FormatOp::execSaveOperations(const std::string& filename, const QByteArray content) const
+{
+    QFile saveFile{QString::fromStdString(filename)};
+    saveFile.open(QIODevice::WriteOnly);
+    const auto quantWrite{saveFile.write(content)};
+    saveFile.close();
+
+    return (quantWrite > 0);
+}
+//--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

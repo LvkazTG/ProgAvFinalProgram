@@ -5,7 +5,7 @@
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
 SearchDeep::SearchDeep(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
-    baseSearch(map, startPoint, endPoint)
+    BaseSearch(map, startPoint, endPoint)
 {
 
 }
@@ -97,6 +97,7 @@ void SearchDeep::principalLoopSearch()
         bool directToEnd{false};
 
         const auto newConnHash{iterToEnd->getActualConnHash()};
+        _searchStats.addNewPointVisited(newConnHash);
 
         // Check presence in list (define error)
 

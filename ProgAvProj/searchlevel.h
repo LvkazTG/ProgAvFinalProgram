@@ -3,7 +3,7 @@
 
 #include "basesearch.h"
 
-class SearchLevel : public baseSearch
+class SearchLevel : public BaseSearch
 {
 public:
     SearchLevel(const MapaObj& map, const std::string& startPoint, const std::string& endPoint);

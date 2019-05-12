@@ -7,6 +7,7 @@
 
 #include "mapaobj.h"
 #include "connlist.h"
+#include "searchstatistics.h"
 
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
@@ -22,13 +23,7 @@ void JsonOp::initialActionsSave()
 //--------------------------------------------------------------------------------------------------
 void JsonOp::createMapHeaderData(const MapaObj& map)
 {
-    if(nullptr != _obj)
-    {
-        auto& objData{*_obj};
-        objData["mapName"] = QString::fromStdString(map.getName());
-        objData["xSize"] = map.getXSize();
-        objData["ySize"] = map.getYSize();
-    }
+    createMapMinimumData(map);
 
     _objPoints = std::make_unique<QJsonArray>();
 }
@@ -161,5 +156,31 @@ std::tuple<const std::string, const uint8_t, const uint8_t, ConnList> JsonOp::lo
                 std::move(newConnList)};
 
     return ret;
+}
+//--------------------------------------------------------------------------------------------------
+void JsonOp::createStatInfo(const SearchStatistics& statObj)
+{
+    if(nullptr != _obj)
+    {
+        auto& objData{*_obj};
+        objData["method"] = QString::fromStdString(statObj.getSearchMethodName());
+        objData["numPathsFound"] = static_cast<qint64>(statObj.getNumPathsFound());
+        objData["maxPathCost"] = static_cast<qint64>(statObj.getMaxPathCost());
+        objData["minPathCost"] = static_cast<qint64>(statObj.getMinPathCost());
+        objData["medPathCost"] = static_cast<qint64>(statObj.getMedPathCost());
+        objData["numIters"] = static_cast<qint64>(statObj.getNumIters());
+        objData["timeRunning_ms"] = static_cast<qint64>(statObj.getSearchTotalTime());
+    }
+}
+//--------------------------------------------------------------------------------------------------
+void JsonOp::createMapMinimumData(const MapaObj& map)
+{
+    if(nullptr != _obj)
+    {
+        auto& objData{*_obj};
+        objData["mapName"] = QString::fromStdString(map.getName());
+        objData["xSize"] = map.getXSize();
+        objData["ySize"] = map.getYSize();
+    }
 }
 //--------------------------------------------------------------------------------------------------

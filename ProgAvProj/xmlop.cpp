@@ -2,6 +2,7 @@
 
 #include "mapaobj.h"
 #include "connlist.h"
+#include "searchstatistics.h"
 
 #include <QDebug>
 //--------------------------------------------------------------------------------------------------
@@ -134,5 +135,27 @@ std::tuple<const std::string, const uint8_t, const uint8_t, ConnList> xmlOp::loa
 
 
     return ret;
+}
+//--------------------------------------------------------------------------------------------------
+void xmlOp::createStatInfo(const SearchStatistics& statObj)
+{
+    _xmlWriter->writeStartElement("SearchStatistics");
+    _xmlWriter->writeAttribute("method", QString::fromStdString(statObj.getSearchMethodName()));
+    _xmlWriter->writeAttribute("numPathsFound", QString::number(statObj.getNumPathsFound()));
+    _xmlWriter->writeAttribute("maxPathCost", QString::number(statObj.getMaxPathCost()));
+    _xmlWriter->writeAttribute("minPathCost", QString::number(statObj.getMinPathCost()));
+    _xmlWriter->writeAttribute("medPathCost", QString::number(statObj.getMedPathCost()));
+    _xmlWriter->writeAttribute("numIters", QString::number(statObj.getNumIters()));
+    _xmlWriter->writeAttribute("timeRunning_ms", QString::number(statObj.getSearchTotalTime()));
+    _xmlWriter->writeEndElement();
+}
+//--------------------------------------------------------------------------------------------------
+void xmlOp::createMapMinimumData(const MapaObj& map)
+{
+    _xmlWriter->writeStartElement("MapInfo");
+    _xmlWriter->writeAttribute("mapName", QString::fromStdString(map.getName()));
+    _xmlWriter->writeAttribute("xSize", QString::number(map.getXSize()));
+    _xmlWriter->writeAttribute("ySize", QString::number(map.getYSize()));
+    _xmlWriter->writeEndElement();
 }
 //--------------------------------------------------------------------------------------------------

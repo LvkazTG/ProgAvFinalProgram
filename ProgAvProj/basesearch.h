@@ -5,18 +5,20 @@
 
 #include "connlist.h"
 #include "pointconniter.h"
+#include "searchstatistics.h"
 
 class MapaObj;
 
-class baseSearch
+class BaseSearch
 {
 public:
-    baseSearch(const MapaObj& map, const std::string& startPoint, const std::string& endPoint);
+    BaseSearch(const MapaObj& map, const std::string& startPoint, const std::string& endPoint);
 
-    virtual ~baseSearch() = default;
+    virtual ~BaseSearch() = default;
 
     bool init();
 
+    const SearchStatistics& getSearchStatistics() const;
 
 protected:
     void calculateActualCost();
@@ -35,10 +37,14 @@ protected:
 
     ConnList const* _connMapList{nullptr};
 
+    SearchStatistics _searchStats{};
+
 private:
     virtual void initLoopConditions() = 0;
     virtual bool extraCoonditionLoopSearch() const = 0;
     virtual void principalLoopSearch() = 0;
+
+    const uint64_t _maxNumIters{250000};
 };
 
 #endif // BASESEARCH_H

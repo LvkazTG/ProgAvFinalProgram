@@ -6,47 +6,252 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>585</width>
+    <height>369</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ProgAvPrinc</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="lblProv">
-      <property name="text">
-       <string>Lucas Test UI</string>
-      </property>
-     </widget>
-    </item>
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0">
     <item row="2" column="0">
-     <widget class="QPushButton" name="btnTest2">
-      <property name="text">
-       <string>Test2 - Load</string>
+     <widget class="QStackedWidget" name="stkOptions">
+      <property name="currentIndex">
+       <number>1</number>
       </property>
+      <widget class="QWidget" name="stkMainWid">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnSearchOpt">
+          <property name="text">
+           <string>Search Options</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="btnVisualOpt">
+          <property name="text">
+           <string>Visualization Options</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnMapOpt">
+          <property name="text">
+           <string>Map Options</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="btnAbout">
+          <property name="text">
+           <string>About</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="stkMap">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnSaveMap">
+          <property name="text">
+           <string>Save Map</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="btnBackMap">
+          <property name="text">
+           <string>&lt;- Back</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="btnLoadMap">
+          <property name="text">
+           <string>Load Map</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnCreateLoadMap">
+          <property name="text">
+           <string>Create new Map</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="stkMapSave">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnSaveMapJson">
+          <property name="text">
+           <string>Save in Json</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnSaveMapXml">
+          <property name="text">
+           <string>Save in Xml</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="btnBackSaveMap">
+          <property name="text">
+           <string>&lt;- Back</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="stkMapLoad">
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnLoadMapJson">
+          <property name="text">
+           <string>Load in Json</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnLoadMapXml">
+          <property name="text">
+           <string>Load in Xml</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="btnBackLoadMap">
+          <property name="text">
+           <string>&lt;- Back</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="stkSearch">
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnSDeep">
+          <property name="text">
+           <string>Search Deep</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnSLevel">
+          <property name="text">
+           <string>Search Level</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="btnSAStar">
+          <property name="text">
+           <string>Search A*</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="btnSGraphPlan">
+          <property name="text">
+           <string>Search Graphplan</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="btnSManual">
+          <property name="text">
+           <string>Manual Search</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QPushButton" name="btnSaveStatistics">
+          <property name="text">
+           <string>Save Statistics</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QPushButton" name="btnBackSearch">
+          <property name="text">
+           <string>&lt;- Back</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="stkStatSave">
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnSaveStatisticsXml">
+          <property name="text">
+           <string>Save in Xml</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnSaveStatisticsJson">
+          <property name="text">
+           <string>Save in Json</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="btnBackSaveStat">
+          <property name="text">
+           <string>&lt;- Back</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="stkVisual">
+       <layout class="QGridLayout" name="gridLayout_8">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnViewMap">
+          <property name="text">
+           <string>View Map</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnFRoute">
+          <property name="text">
+           <string>View found route</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="btnBackVisual">
+          <property name="text">
+           <string>&lt;- Back</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QPushButton" name="btnTest3">
-      <property name="text">
-       <string>Test3 - Draw</string>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lblProgName">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QPushButton" name="btnTest">
       <property name="text">
-       <string>Test</string>
+       <string>Map Search - Prog Av</string>
       </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QPushButton" name="btnTest4">
-      <property name="text">
-       <string>Test4 - Manual</string>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>

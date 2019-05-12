@@ -3,7 +3,7 @@
 
 #include "basesearch.h"
 
-class SearchDeep : public baseSearch
+class SearchDeep : public BaseSearch
 {
 public:
     SearchDeep(const MapaObj& map, const std::string& startPoint,

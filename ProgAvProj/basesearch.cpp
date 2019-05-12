@@ -9,7 +9,7 @@
 
 static MapaObj const* bla{nullptr};
 //--------------------------------------------------------------------------------------------------
-baseSearch::baseSearch(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
+BaseSearch::BaseSearch(const MapaObj& map, const std::string& startPoint, const std::string& endPoint) :
     _bestPathCost{std::numeric_limits<uint64_t>::max()}
 {
     bla = &map;
@@ -29,9 +29,13 @@ baseSearch::baseSearch(const MapaObj& map, const std::string& startPoint, const 
     _connMapList = &map.getConnList();
 }
 //--------------------------------------------------------------------------------------------------
-bool baseSearch::init()
+bool BaseSearch::init()
 {
     bool ret{false};
+
+    _searchStats.clear();
+
+    _searchStats.startSearchtime();
 
     _actualPath.emplace_back(_startHash, _connMapList->getConnectedMapElem(_startHash));
     qDebug() << "First Conn hash" << _actualPath.begin()->getActualConnHash();
@@ -49,8 +53,13 @@ bool baseSearch::init()
 
 //    initLoopConditions();
 
-    while(_keepSearchGoing && extraCoonditionLoopSearch())
+    // First check for starting point
+    _searchStats.addNewPointVisited(_startHash);
+    _searchStats.addIter();
+
+    while(_keepSearchGoing && (_searchStats.getNumIters() < _maxNumIters) && extraCoonditionLoopSearch())
     {
+        _searchStats.addIter();
         principalLoopSearch();
     }
 
@@ -63,10 +72,12 @@ bool baseSearch::init()
     }
     qDebug() << "\n Cost " << _bestPathCost;
 
+    _searchStats.endSearchTime();
+
     return ret;
 }
 //--------------------------------------------------------------------------------------------------
-void baseSearch::calculateActualCost()
+void BaseSearch::calculateActualCost()
 {
     _actualPathCost = 0;
 
@@ -84,7 +95,7 @@ void baseSearch::calculateActualCost()
     }
 }
 //--------------------------------------------------------------------------------------------------
-bool baseSearch::validRoute() const
+bool BaseSearch::validRoute() const
 {
     std::set<uint16_t> nonRepPath{};
 
@@ -101,19 +112,29 @@ bool baseSearch::validRoute() const
     return nonRepPath.size() == hashesPath.size();
 }
 //--------------------------------------------------------------------------------------------------
-std::tuple<const bool, const bool> baseSearch::validateEnd(const uint16_t pointHash)
+std::tuple<const bool, const bool> BaseSearch::validateEnd(const uint16_t pointHash)
 {
     calculateActualCost();
 
     const std::tuple<const bool, const bool> ret{{pointHash == _endHash},
                                                  {_actualPathCost < _bestPathCost}};
 
-    if(std::get<0>(ret) && std::get<1>(ret))
+    if(std::get<0>(ret))
     {
-        _bestPathCost = _actualPathCost;
-        _bestPath = _actualPath;
+        _searchStats.addNewPathCost(_actualPathCost);
+
+        if(std::get<1>(ret))
+        {
+            _bestPathCost = _actualPathCost;
+            _bestPath = _actualPath;
+        }
     }
 
     return ret;
+}
+//--------------------------------------------------------------------------------------------------
+const SearchStatistics& BaseSearch::getSearchStatistics() const
+{
+    return _searchStats;
 }
 //--------------------------------------------------------------------------------------------------
