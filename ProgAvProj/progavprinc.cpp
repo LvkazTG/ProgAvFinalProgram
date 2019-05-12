@@ -20,6 +20,7 @@
 #include <QFileDialog>
 
 #include "mapvisual.h"
+#include "searchuserstart.h"
 
 ProgAvPrinc::ProgAvPrinc(QWidget *parent) :
     QMainWindow(parent),
@@ -45,31 +46,31 @@ void ProgAvPrinc::on_btnCreateLoadMap_clicked()
 
     _mapLoad->setName("Lucas_test_3");
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSDeep_clicked()
 {
     _searchMethod = std::make_shared<SearchDeep>(*_mapLoad);
-    startSearch();
+    createSearchUserDlg();
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSLevel_clicked()
 {
     _searchMethod = std::make_shared<SearchLevel>(*_mapLoad);
-    startSearch();
+    createSearchUserDlg();
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSAStar_clicked()
 {
     _searchMethod = std::make_shared<searchAStart>(*_mapLoad);
-    startSearch();
+    createSearchUserDlg();
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSGraphPlan_clicked()
 {
     _searchMethod = std::make_shared<SearchGraphplanAdapt>(*_mapLoad);
-    startSearch();
+    createSearchUserDlg();
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSManual_clicked()
 {
 //    SearchManual* manSearch{new SearchManual{"point_1_4", &(*_mapLoad), this}};
@@ -104,20 +105,6 @@ std::string ProgAvPrinc::getSaveUserFileChoice()
 {
     const QString expectedFilename{QFileDialog::getSaveFileName(this, "Choose to save")};
     return expectedFilename.toStdString();
-}
-
-void ProgAvPrinc::startSearch()
-{
-    const bool returned4{_searchMethod->init()};
-
-    if(returned4)
-    {
-        qDebug() << "Very good4";
-    }
-    else
-    {
-        qDebug() << "Fail, bad choice?4";
-    }
 }
 
 void ProgAvPrinc::on_btnSaveMapJson_clicked()
@@ -288,6 +275,14 @@ void ProgAvPrinc::on_btnAbout_clicked()
 {
     qDebug() << "Not yet imp";
 }
+//--------------------------------------------------------------------------------------------------
+void ProgAvPrinc::createSearchUserDlg()
+{
+    searchUserStart* searchUserDlg{new searchUserStart{&(*_mapLoad), _searchMethod, this}};
+    searchUserDlg->setAttribute(Qt::WA_DeleteOnClose);
+    searchUserDlg->show();
+}
+//--------------------------------------------------------------------------------------------------
 
 
 

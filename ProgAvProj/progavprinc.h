@@ -28,7 +28,7 @@ private:
     std::string openUserFileChoice();
     std::string getSaveUserFileChoice();
 
-    void startSearch();
+    void createSearchUserDlg();
 
 
 private slots:

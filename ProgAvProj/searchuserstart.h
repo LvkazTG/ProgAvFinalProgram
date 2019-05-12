@@ -26,9 +26,9 @@ public:
     ~searchUserStart();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_btnClose_clicked();
 
-    void on_pushButton_2_clicked();
+    void on_btnStart_clicked();
 
 private:
     Ui::searchUserStart *ui{nullptr};
@@ -39,6 +39,10 @@ private:
         searchUserInfoSinglePoint(const QLineEdit* lnName,
                                   const QLineEdit* lnX,
                                   const QLineEdit* lnY);
+
+    void informRunning();
+    void informRunningStop();
+
 };
 
 #endif // SEARCHUSERSTART_H

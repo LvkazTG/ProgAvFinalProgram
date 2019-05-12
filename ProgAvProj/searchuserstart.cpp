@@ -22,12 +22,12 @@ searchUserStart::~searchUserStart()
     delete ui;
 }
 
-void searchUserStart::on_pushButton_clicked()
+void searchUserStart::on_btnClose_clicked()
 {
     close();
 }
 
-void searchUserStart::on_pushButton_2_clicked()
+void searchUserStart::on_btnStart_clicked()
 {
     auto [startPoint, okStart] = searchUserInfoSinglePoint(ui->lnStartPName,
                                                            ui->lnStartPX,
@@ -41,8 +41,19 @@ void searchUserStart::on_pushButton_2_clicked()
     {
         _searchMetUsing->definePoints(startPoint->getHash(), endPoint->getHash());
 
-        // Put a warning of running Here
-        _searchMetUsing->init();
+        informRunning();
+        const bool returned{_searchMetUsing->init()};
+
+        if(returned)
+        {
+            qDebug() << "Very good4";
+        }
+        else
+        {
+            qDebug() << "Fail, bad choice?4";
+        }
+
+        informRunningStop();
     }
     else
     {
@@ -72,10 +83,24 @@ std::tuple<std::shared_ptr<PointObj>, const bool>
         if(okConvX && okConvY)
         {
             pointObj =_map->getPointByCoord(static_cast<uint8_t>(pXVal),
-                                              static_cast<uint8_t>(pYVal));
+                                             static_cast<uint8_t>(pYVal));
         }
     }
 
     return std::make_tuple<std::shared_ptr<PointObj>, const bool>(std::move(pointObj),
                                                                   (nullptr != pointObj));
+}
+
+void searchUserStart::informRunning()
+{
+    ui->btnStart->setText("Running");
+    ui->btnStart->setEnabled(false);
+    ui->btnClose->setEnabled(false);
+}
+
+void searchUserStart::informRunningStop()
+{
+    ui->btnStart->setText("Start");
+    ui->btnStart->setEnabled(true);
+    ui->btnClose->setEnabled(true);
 }
