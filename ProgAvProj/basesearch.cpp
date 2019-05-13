@@ -146,3 +146,8 @@ uint64_t BaseSearch::getBestPathCost() const
     return _bestPathCost;
 }
 //--------------------------------------------------------------------------------------------------
+void BaseSearch::setSearchType(const std::string& type)
+{
+    _searchStats.setSearchMethodName(type);
+}
+//--------------------------------------------------------------------------------------------------

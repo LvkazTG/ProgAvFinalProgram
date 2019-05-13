@@ -8,6 +8,7 @@
 //--------------------------------------------------------------------------------------------------
 SearchGraphplanAdapt::SearchGraphplanAdapt(const MapaObj& map) : BaseSearch{map}
 {
+    setSearchType("Graphplan");
 }
 //--------------------------------------------------------------------------------------------------
 void SearchGraphplanAdapt::initLoopConditions()

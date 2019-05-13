@@ -54,8 +54,6 @@ private slots:
     void on_btnViewMap_clicked();
     void on_btnFRoute_clicked();
 
-    void on_btnAbout_clicked();
-
     void on_btnMapOpt_clicked();
     void on_btnSearchOpt_clicked();
     void on_btnVisualOpt_clicked();

@@ -44,6 +44,8 @@ private:
 
     void clear();
 
+    void setSearchMethodName(const std::string& newName);
+
 };
 
 #endif // SEARCHSTATISTICS_H

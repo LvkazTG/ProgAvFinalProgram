@@ -21,30 +21,26 @@
 
 #include "mapvisual.h"
 #include "searchuserstart.h"
-
+#include "dlginitusermap.h"
+#include "searchresultdlg.h"
+//--------------------------------------------------------------------------------------------------
 ProgAvPrinc::ProgAvPrinc(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ProgAvPrinc)
 {
     ui->setupUi(this);
     ui->stkOptions->setCurrentWidget(ui->stkMainWid);
-}
+}//--------------------------------------------------------------------------------------------------
 
 ProgAvPrinc::~ProgAvPrinc()
 {
     delete ui;
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnCreateLoadMap_clicked()
 {
-    // Add window to choose size
-
-    _mapLoad = std::make_shared<MapaObj>(10,10);
-    _mapLoad->createNew();
-
-//    _mapLoad->PrintConnectEdelems();
-
-    _mapLoad->setName("Lucas_test_3");
+    DlgInitUserMap* dlg{new DlgInitUserMap{_mapLoad}};
+    dlg->show();
 }
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSDeep_clicked()
@@ -78,7 +74,7 @@ void ProgAvPrinc::on_btnSManual_clicked()
     manSearch->setAttribute(Qt::WA_DeleteOnClose);
     manSearch->show();
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnViewMap_clicked()
 {
     if(nullptr != _mapLoad)
@@ -93,20 +89,19 @@ void ProgAvPrinc::on_btnViewMap_clicked()
         // Warn user
     }
 }
-
-
+//--------------------------------------------------------------------------------------------------
 std::string ProgAvPrinc::openUserFileChoice()
 {
     const QString expectedFilename{QFileDialog::getOpenFileName(this, "Choose to load")};
     return expectedFilename.toStdString();
 }
-
+//--------------------------------------------------------------------------------------------------
 std::string ProgAvPrinc::getSaveUserFileChoice()
 {
     const QString expectedFilename{QFileDialog::getSaveFileName(this, "Choose to save")};
     return expectedFilename.toStdString();
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSaveMapJson_clicked()
 {
     const auto saveFileName{getSaveUserFileChoice()};
@@ -121,7 +116,7 @@ void ProgAvPrinc::on_btnSaveMapJson_clicked()
         // warn user
     }
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSaveMapXml_clicked()
 {
     const auto saveFileName{getSaveUserFileChoice()};
@@ -136,7 +131,7 @@ void ProgAvPrinc::on_btnSaveMapXml_clicked()
         // warn user
     }
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnLoadMapJson_clicked()
 {
     const auto loadFileName{openUserFileChoice()};
@@ -152,7 +147,7 @@ void ProgAvPrinc::on_btnLoadMapJson_clicked()
         // warn user
     }
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnLoadMapXml_clicked()
 {
     const auto loadFileName{openUserFileChoice()};
@@ -168,7 +163,7 @@ void ProgAvPrinc::on_btnLoadMapXml_clicked()
         // warn user
     }
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSaveStatisticsJson_clicked()
 {
     const auto saveFileName{getSaveUserFileChoice()};
@@ -184,7 +179,7 @@ void ProgAvPrinc::on_btnSaveStatisticsJson_clicked()
     }
 
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSaveStatisticsXml_clicked()
 {
     ui->btnSaveStatisticsXml->setStyleSheet("");
@@ -207,12 +202,12 @@ void ProgAvPrinc::on_btnMapOpt_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkMap);
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSearchOpt_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkSearch);
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnVisualOpt_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkVisual);
@@ -223,27 +218,27 @@ void ProgAvPrinc::on_btnBackMap_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkMainWid);
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnBackSearch_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkMainWid);
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnBackVisual_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkMainWid);
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnBackLoadMap_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkMap);
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnBackSaveMap_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkMap);
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnBackSaveStat_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkSearch);
@@ -254,12 +249,12 @@ void ProgAvPrinc::on_btnSaveMap_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkMapSave);
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnLoadMap_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkMapLoad);
 }
-
+//--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSaveStatistics_clicked()
 {
     ui->stkOptions->setCurrentWidget(ui->stkStatSave);
@@ -268,12 +263,15 @@ void ProgAvPrinc::on_btnSaveStatistics_clicked()
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnFRoute_clicked()
 {
-    qDebug() << "Not yet imp";
-}
-
-void ProgAvPrinc::on_btnAbout_clicked()
-{
-    qDebug() << "Not yet imp";
+    if((nullptr != _mapLoad) && (nullptr != _searchMethod))
+    {
+        SearchResultDlg* dlg{new SearchResultDlg{&(*_mapLoad), _searchMethod, this}};
+        dlg->show();
+    }
+    else
+    {
+        // Warn user
+    }
 }
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::createSearchUserDlg()
@@ -283,21 +281,3 @@ void ProgAvPrinc::createSearchUserDlg()
     searchUserDlg->show();
 }
 //--------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

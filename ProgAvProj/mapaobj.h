@@ -54,7 +54,8 @@ private:
 
     ConnList _connectedList{};
 //    uint8_t _maxConnectionsPerPoint{4};
-    uint8_t _maxConnectionsPerPoint{3};
+    const uint8_t _maxConnectionsPerPoint{5};
+    const uint8_t _maxConnectionDist{4};
     bool finishedMapa{false};
     std::string _mapName{};
 

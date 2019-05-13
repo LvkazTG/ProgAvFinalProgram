@@ -47,6 +47,8 @@ protected:
 
     SearchStatistics _searchStats{};
 
+    void setSearchType(const std::string& type);
+
 private:
     virtual void initLoopConditions() = 0;
     virtual bool extraCoonditionLoopSearch() const = 0;

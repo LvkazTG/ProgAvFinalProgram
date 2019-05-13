@@ -42,8 +42,6 @@ void MapaObj::createConnectionsMatrix()
     rng.seed(std::chrono::system_clock::now().time_since_epoch().count());
 
     const uint8_t distorceDistVal{4};
-//    const uint8_t maxConnectionDist{25};
-    const uint8_t maxConnectionDist{10};
 
     std::vector<std::vector<std::tuple<uint8_t, uint16_t>>> matrixValues{};
 
@@ -55,7 +53,7 @@ void MapaObj::createConnectionsMatrix()
         {
 //            const auto pDist{static_cast<uint32_t>(elem1.distFrom(elem2))};
             const auto pDist{static_cast<uint32_t>(elem1.second->distFrom(*(elem2.second)))};
-            if(pDist < maxConnectionDist)
+            if(pDist < _maxConnectionDist)
             {
                 const auto connectedPoint{(rand() % 2)};
                 if(connectedPoint != 0)

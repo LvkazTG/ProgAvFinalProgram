@@ -7,7 +7,7 @@
 //--------------------------------------------------------------------------------------------------
 SearchLevel::SearchLevel(const MapaObj& map) : BaseSearch{map}
 {
-
+    setSearchType("Level");
 }
 //--------------------------------------------------------------------------------------------------
 void SearchLevel::initLoopConditions()

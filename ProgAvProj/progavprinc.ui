@@ -14,11 +14,11 @@
    <string>ProgAvPrinc</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0">
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0">
     <item row="2" column="0">
      <widget class="QStackedWidget" name="stkOptions">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="stkMainWid">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -29,13 +29,6 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QPushButton" name="btnVisualOpt">
-          <property name="text">
-           <string>Visualization Options</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QPushButton" name="btnMapOpt">
           <property name="text">
@@ -43,10 +36,10 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QPushButton" name="btnAbout">
+        <item row="2" column="0">
+         <widget class="QPushButton" name="btnVisualOpt">
           <property name="text">
-           <string>About</string>
+           <string>Visualization Options</string>
           </property>
          </widget>
         </item>

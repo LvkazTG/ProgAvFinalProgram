@@ -28,6 +28,7 @@ CONFIG += c++17
 SOURCES += \
         basesearch.cpp \
         connlist.cpp \
+        dlginitusermap.cpp \
         formatop.cpp \
         jsonop.cpp \
         main.cpp \
@@ -51,6 +52,7 @@ SOURCES += \
 HEADERS += \
         basesearch.h \
         connlist.h \
+        dlginitusermap.h \
         formatop.h \
         jsonop.h \
         mapaobj.h \
@@ -71,6 +73,7 @@ HEADERS += \
         xmlop.h
 
 FORMS += \
+        dlginitusermap.ui \
         mapvisual.ui \
         progavprinc.ui \
         searchmanual.ui \

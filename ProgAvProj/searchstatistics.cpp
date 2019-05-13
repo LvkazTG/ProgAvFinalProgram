@@ -38,6 +38,11 @@ void SearchStatistics::clear()
     _searchEndTime = 0;
 }
 //--------------------------------------------------------------------------------------------------
+void SearchStatistics::setSearchMethodName(const std::string& newName)
+{
+    _searchMethod = newName;
+}
+//--------------------------------------------------------------------------------------------------
 qint64 SearchStatistics::getSearchTotalTime() const
 {
     return (((0 != _searchStartTime) && (0 != _searchEndTime)) ? (_searchEndTime - _searchStartTime) :

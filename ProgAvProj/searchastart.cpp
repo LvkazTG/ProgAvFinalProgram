@@ -6,7 +6,7 @@
 //--------------------------------------------------------------------------------------------------
 searchAStart::searchAStart(const MapaObj& map) : BaseSearch{map}, _mapInUse{&map}
 {
-
+    setSearchType("A*");
 }
 //--------------------------------------------------------------------------------------------------
 void searchAStart::initLoopConditions()
