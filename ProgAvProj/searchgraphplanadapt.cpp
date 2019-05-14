@@ -106,22 +106,21 @@ void SearchGraphplanAdapt::backTrackPath()
         for(const uint16_t singleState : *iterStatesBefore)
         {
             PointConnIter pointInfoIter{singleState, _connMapList->getConnectedMapElem(singleState)};
+            bool foundPoint{false};
             while(!pointInfoIter.isAtEnd())
             {
                 if(searchPoints.find(pointInfoIter.getActualConnHash()) != searchPoints.end())
                 {
-                    removeStatesAfter.insert(pointInfoIter.getActualConnHash());
+                    foundPoint = true;
                     break;
                 }
 
-                if(pointInfoIter.isOnLastValidIter())
-                {
-                    break;
-                }
-                else
-                {
-                    pointInfoIter.moveNext();
-                }
+                pointInfoIter.moveNext();
+            }
+
+            if(!foundPoint)
+            {
+                removeStatesAfter.insert(pointInfoIter.getPointHash());
             }
         }
 
@@ -130,8 +129,6 @@ void SearchGraphplanAdapt::backTrackPath()
             iterStatesBefore->erase(stateToRemove);
         }
     }
-
-
 }
 //--------------------------------------------------------------------------------------------------
 void SearchGraphplanAdapt::backtrackFirstRoute()
@@ -147,7 +144,7 @@ void SearchGraphplanAdapt::backtrackFirstRoute()
             break;
         }
 
-        const auto searchPoint{*(iterStates->begin())};
+        const auto searchPoint{_bestPath.begin()->getPointHash()};
 
         bool endLoopEarly{false};
         for(const uint16_t singleState : *iterStatesBefore)
@@ -168,21 +165,13 @@ void SearchGraphplanAdapt::backtrackFirstRoute()
                     break;
                 }
 
-                if(pointInfoIter.isOnLastValidIter())
-                {
-                    break;
-                }
-                else
-                {
-                    pointInfoIter.moveNext();
-                }
+                pointInfoIter.moveNext();
             }
 
             if(endLoopEarly)
             {
                 break;
             }
-
         }
         Q_ASSERT(endLoopEarly);
     }
