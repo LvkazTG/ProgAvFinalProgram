@@ -43,19 +43,19 @@ void SearchStatistics::setSearchMethodName(const std::string& newName)
     _searchMethod = newName;
 }
 //--------------------------------------------------------------------------------------------------
-qint64 SearchStatistics::getSearchTotalTime() const
+int64_t SearchStatistics::getSearchTotalTime() const
 {
     return (((0 != _searchStartTime) && (0 != _searchEndTime)) ? (_searchEndTime - _searchStartTime) :
                                                                  0);
 }
 //--------------------------------------------------------------------------------------------------
-qint64 SearchStatistics::getSearchTimeAfterStart() const
+int64_t SearchStatistics::getSearchTimeAfterStart() const
 {
     return ((0 != _searchStartTime) ? (QDateTime::currentMSecsSinceEpoch() - _searchStartTime) :
                                       0);
 }
 //--------------------------------------------------------------------------------------------------
-quint64 SearchStatistics::getNumIters() const
+int64_t SearchStatistics::getNumIters() const
 {
     return _numIters;
 }

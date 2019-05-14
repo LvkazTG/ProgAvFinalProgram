@@ -100,7 +100,6 @@ void SearchGraphplanAdapt::backTrackPath()
         }
 
         decltype(_allVisitedPoints) removeStatesAfter{};
-
         const auto& searchPoints{*iterStates};
 
         for(const uint16_t singleState : *iterStatesBefore)

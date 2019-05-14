@@ -16,10 +16,10 @@ public:
     void addIter();
     void addNewPathCost(const uint64_t newCost);
 
-    qint64 getSearchTotalTime() const;
-    qint64 getSearchTimeAfterStart() const;
+    int64_t getSearchTotalTime() const;
+    int64_t getSearchTimeAfterStart() const;
 
-    quint64 getNumIters() const;
+    int64_t getNumIters() const;
 
     void addSearchMethodName(const std::string& newSearch);
     const std::string& getSearchMethodName() const;
@@ -33,8 +33,8 @@ private:
     std::vector<uint64_t> _pathCostsFound{};
     std::set<uint16_t> _visitedPoints{};
     uint64_t _numIters{0};
-    qint64 _searchStartTime{};
-    qint64 _searchEndTime{};
+    int64_t _searchStartTime{};
+    int64_t _searchEndTime{};
     std::string _searchMethod{};
 
     SearchStatistics();
