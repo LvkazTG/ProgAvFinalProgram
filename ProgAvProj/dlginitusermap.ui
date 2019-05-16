@@ -42,7 +42,7 @@
     </widget>
    </item>
    <item row="3" column="2">
-    <widget class="QPushButton" name="brnConfirm">
+    <widget class="QPushButton" name="btnConfirm">
      <property name="text">
       <string>Confirm</string>
      </property>

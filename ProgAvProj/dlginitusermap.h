@@ -5,8 +5,9 @@
 #include <memory>
 #include "mapaobj.h"
 
-namespace Ui {
-class DlgInitUserMap;
+namespace Ui
+{
+    class DlgInitUserMap;
 }
 
 class DlgInitUserMap : public QDialog
@@ -21,7 +22,7 @@ public:
 private slots:
     void on_btnClose_clicked();
 
-    void on_brnConfirm_clicked();
+    void on_btnConfirm_clicked();
 
 private:
     Ui::DlgInitUserMap *ui;

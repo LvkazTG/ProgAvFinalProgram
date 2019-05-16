@@ -20,7 +20,7 @@ void DlgInitUserMap::on_btnClose_clicked()
     close();
 }
 //--------------------------------------------------------------------------------------------------
-void DlgInitUserMap::on_brnConfirm_clicked()
+void DlgInitUserMap::on_btnConfirm_clicked()
 {
     bool okConvX{false};
     bool okConvY{false};

@@ -96,6 +96,7 @@ QByteArray JsonOp::getDataToSave()
 bool JsonOp::checkAllKeys()
 {
     //pass for now
+    return true;
 }
 //--------------------------------------------------------------------------------------------------
 void JsonOp::initialActions(const QByteArray fileContent)

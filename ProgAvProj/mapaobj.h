@@ -7,8 +7,6 @@
 #include <memory>
 #include <connlist.h>
 
-//class ConnList;
-
 class MapaObj
 {
 public:
@@ -20,15 +18,11 @@ public:
 
     void PrintConnectEdelems() const;
 
-    const uint8_t _xSize{5};
-    const uint8_t _ySize{5};
-
     void createNew();
 
     uint8_t getXSize() const;
     uint8_t getYSize() const;
 
-//    std::vector<PointObj> _points{};
     void setName(const std::string& newName);
     const std::string& getName() const;
 
@@ -43,22 +37,19 @@ public:
 
     const std::map<uint16_t, std::shared_ptr<PointObj>>& getAllPoints() const;
 
-    std::map<uint16_t, std::shared_ptr<PointObj>> _points{};
-
-
-
 private:
     void createConnectionsMatrix();
 
     void initMap(std::map<uint16_t, std::shared_ptr<PointObj>> points, ConnList connList);
 
+    const uint8_t _xSize{5};
+    const uint8_t _ySize{5};
     ConnList _connectedList{};
-//    uint8_t _maxConnectionsPerPoint{4};
     const uint8_t _maxConnectionsPerPoint{5};
     const uint8_t _maxConnectionDist{4};
     bool finishedMapa{false};
     std::string _mapName{};
-
+    std::map<uint16_t, std::shared_ptr<PointObj>> _points{};
 };
 
 #endif // MAPAOBJ_H

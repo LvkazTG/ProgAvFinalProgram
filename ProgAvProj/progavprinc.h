@@ -7,8 +7,9 @@
 #include "mapaobj.h"
 #include "basesearch.h"
 
-namespace Ui {
-class ProgAvPrinc;
+namespace Ui
+{
+    class ProgAvPrinc;
 }
 
 class ProgAvPrinc : public QMainWindow
