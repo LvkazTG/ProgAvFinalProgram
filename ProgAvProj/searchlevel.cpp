@@ -62,7 +62,7 @@ void SearchLevel::principalLoopSearch()
 
         actualElemIter++;
         _actualPath.pop_back();
-        if(actualElemIter->moveNext())
+        if(actualElemIter->moveNext() && !actualElemIter->isAtEnd())
         {
             const auto newConnHash{actualElemIter->getActualConnHash()};
             _actualPath.emplace_back(newConnHash, _connMapList->getConnectedMapElem(newConnHash));
