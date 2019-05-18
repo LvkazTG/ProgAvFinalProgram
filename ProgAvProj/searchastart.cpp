@@ -3,13 +3,15 @@
 #include "mapaobj.h"
 
 #include <QDebug>
+
+using namespace Search;
 //--------------------------------------------------------------------------------------------------
-searchAStart::searchAStart(const MapaObj& map) : BaseSearch{map}, _mapInUse{&map}
+SearchAStart::SearchAStart(const MapaObj& map) : BaseSearch{map}, _mapInUse{&map}
 {
     setSearchType("A*");
 }
 //--------------------------------------------------------------------------------------------------
-void searchAStart::initLoopConditions()
+void SearchAStart::initLoopConditions()
 {
     // Dont need to check heuristic for first point
     const std::tuple<uint16_t, uint64_t, uint16_t>firstItem{_actualPath.begin()->getPointHash(), 0,
@@ -20,13 +22,13 @@ void searchAStart::initLoopConditions()
     //const auto extraCostAStar{calcHeuristicAStar(startPoint)};
 }
 //--------------------------------------------------------------------------------------------------
-bool searchAStart::extraCoonditionLoopSearch() const
+bool SearchAStart::extraConditionLoopSearch() const
 {
     // No extra conditional break of loop stipulated
     return true;
 }
 //--------------------------------------------------------------------------------------------------
-void searchAStart::principalLoopSearch()
+void SearchAStart::principalLoopSearch()
 {
     bool forceNextIteration{false};
 
@@ -130,12 +132,12 @@ void searchAStart::principalLoopSearch()
 
 }
 //--------------------------------------------------------------------------------------------------
-uint64_t searchAStart::calcHeuristicAStar(const uint16_t pointHash) const
+uint64_t SearchAStart::calcHeuristicAStar(const uint16_t pointHash) const
 {
     return static_cast<uint64_t>(_mapInUse->getPoint(pointHash)->distFrom(*(_mapInUse->getPoint(_endHash))));
 }
 //--------------------------------------------------------------------------------------------------
-void searchAStart::updateBestPath(const uint16_t lastPointHash, const uint64_t expectedTotalCost)
+void SearchAStart::updateBestPath(const uint16_t lastPointHash, const uint64_t expectedTotalCost)
 {
     // Should never fail
     Q_ASSERT(lastPointHash == _endHash);
@@ -178,7 +180,7 @@ void searchAStart::updateBestPath(const uint16_t lastPointHash, const uint64_t e
 //    Q_ASSERT(expectedTotalCost == bestCostSum);
     if(expectedTotalCost != bestCostSum)
     {
-        qDebug() << "BUAAAAAAAAAAAAAAAAAAA ------------ Contamos errado!!!!!" << expectedTotalCost << bestCostSum;
+        qDebug() << "------------ Contamos errado!!!!!" << expectedTotalCost << bestCostSum;
     }
 
     _bestPathCost = expectedTotalCost;

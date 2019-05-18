@@ -137,7 +137,7 @@ std::tuple<const std::string, const uint8_t, const uint8_t, ConnList> xmlOp::loa
     return ret;
 }
 //--------------------------------------------------------------------------------------------------
-void xmlOp::createStatInfo(const SearchStatistics& statObj)
+void xmlOp::createStatInfo(const Search::SearchStatistics& statObj)
 {
     _xmlWriter->writeStartElement("SearchStatistics");
     _xmlWriter->writeAttribute("method", QString::fromStdString(statObj.getSearchMethodName()));

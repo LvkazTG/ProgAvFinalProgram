@@ -4,6 +4,8 @@
 #include "pointobj.h"
 
 #include <QDebug>
+
+using namespace Search;
 //--------------------------------------------------------------------------------------------------
 SearchLevel::SearchLevel(const MapaObj& map) : BaseSearch{map}
 {
@@ -17,7 +19,7 @@ void SearchLevel::initLoopConditions()
     _actuallvlSearch = 1;
 }
 //--------------------------------------------------------------------------------------------------
-bool SearchLevel::extraCoonditionLoopSearch() const
+bool SearchLevel::extraConditionLoopSearch() const
 {
     return (_maxlvlSearch > _actuallvlSearch);
 }

@@ -3,20 +3,23 @@
 
 #include "basesearch.h"
 
-class SearchDeep : public BaseSearch
+namespace Search
 {
-public:
-    SearchDeep(const MapaObj& map);
+    class SearchDeep : public BaseSearch
+    {
+    public:
+        SearchDeep(const MapaObj& map);
 
-    virtual ~SearchDeep() override = default;
+        virtual ~SearchDeep() override = default;
 
-private:
-    virtual void initLoopConditions() override;
-    virtual bool extraCoonditionLoopSearch() const override;
-    virtual void principalLoopSearch() override;
+    private:
+        virtual void initLoopConditions() override;
+        virtual bool extraConditionLoopSearch() const override;
+        virtual void principalLoopSearch() override;
 
-    bool _previousError{false};
-    bool _popLastElem{false};
-};
+        bool _previousError{false};
+        bool _popLastElem{false};
+    };
+}
 
 #endif // SEARCHDEEP_H

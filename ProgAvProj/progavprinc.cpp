@@ -23,6 +23,8 @@
 #include "searchuserstart.h"
 #include "dlginitusermap.h"
 #include "searchresultdlg.h"
+
+using namespace Search;
 //--------------------------------------------------------------------------------------------------
 ProgAvPrinc::ProgAvPrinc(QWidget *parent) :
     QMainWindow(parent),
@@ -57,7 +59,7 @@ void ProgAvPrinc::on_btnSLevel_clicked()
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSAStar_clicked()
 {
-    _searchMethod = std::make_shared<searchAStart>(*_mapLoad);
+    _searchMethod = std::make_shared<SearchAStart>(*_mapLoad);
     createSearchUserDlg();
 }
 //--------------------------------------------------------------------------------------------------

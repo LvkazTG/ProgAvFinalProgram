@@ -5,6 +5,8 @@
 #include "pointobj.h"
 
 #include <QDebug>
+
+using namespace Search;
 //--------------------------------------------------------------------------------------------------
 SearchGraphplanAdapt::SearchGraphplanAdapt(const MapaObj& map) : BaseSearch{map}
 {
@@ -17,7 +19,7 @@ void SearchGraphplanAdapt::initLoopConditions()
     _newStatesPerIter.emplace_back(firstLayer);
 }
 //--------------------------------------------------------------------------------------------------
-bool SearchGraphplanAdapt::extraCoonditionLoopSearch() const
+bool SearchGraphplanAdapt::extraConditionLoopSearch() const
 {
     return (_newStatesPerIter.size() <= _limitSearchLayer);
 }

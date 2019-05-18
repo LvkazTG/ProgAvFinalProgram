@@ -4,8 +4,9 @@
 #include "mapaobj.h"
 #include "basesearch.h"
 
+using namespace Search;
 
-SearchResultDlg::SearchResultDlg(const MapaObj* map,const std::shared_ptr<BaseSearch>& searchUsing,
+SearchResultDlg::SearchResultDlg(const MapaObj* map,const std::shared_ptr<Search::BaseSearch>& searchUsing,
                                  QWidget *parent) :
     QDialog{parent}, ui{new Ui::SearchResultDlg}
 {

@@ -10,6 +10,8 @@
 #include "searchstatistics.h"
 
 #include <QDebug>
+
+using namespace Search;
 //--------------------------------------------------------------------------------------------------
 JsonOp::JsonOp(QObject *parent) : FormatOp{parent}
 {
@@ -159,7 +161,7 @@ std::tuple<const std::string, const uint8_t, const uint8_t, ConnList> JsonOp::lo
     return ret;
 }
 //--------------------------------------------------------------------------------------------------
-void JsonOp::createStatInfo(const SearchStatistics& statObj)
+void JsonOp::createStatInfo(const Search::SearchStatistics& statObj)
 {
     if(nullptr != _obj)
     {

@@ -3,6 +3,8 @@
 #include "pointobj.h"
 
 #include <QDebug>
+
+using namespace Search;
 //--------------------------------------------------------------------------------------------------
 SearchDeep::SearchDeep(const MapaObj& map) : BaseSearch{map}
 {
@@ -15,7 +17,7 @@ void SearchDeep::initLoopConditions()
     _popLastElem = false;
 }
 //--------------------------------------------------------------------------------------------------
-bool SearchDeep::extraCoonditionLoopSearch() const
+bool SearchDeep::extraConditionLoopSearch() const
 {
     // No extra conditional break of loop stipulated
     return true;

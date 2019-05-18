@@ -1,4 +1,6 @@
 #include "searchstatistics.h"
+
+using namespace Search;
 //--------------------------------------------------------------------------------------------------
 SearchStatistics::SearchStatistics()
 {

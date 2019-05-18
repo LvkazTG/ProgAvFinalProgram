@@ -10,7 +10,11 @@
 
 class MapaObj;
 class ConnList;
-class SearchStatistics;
+
+namespace Search
+{
+    class SearchStatistics;
+}
 
 class FormatOp : public QObject
 {
@@ -20,9 +24,9 @@ public:
 
     bool saveMap(const MapaObj& map, const std::string& mapFile);
 
-    MapaObj loadMap(const std::string mapFile);
+    MapaObj loadMap(const std::string& mapFile);
 
-    bool saveStatistics(const SearchStatistics& statObj, const MapaObj& actualMap,
+    bool saveStatistics(const Search::SearchStatistics& statObj, const MapaObj& actualMap,
                         const std::string& statFile);
 
 private:
@@ -40,9 +44,9 @@ private:
 
     virtual void initialActions(const QByteArray fileContent) = 0;
 
-    QByteArray generateContentToSaveStatistics(const SearchStatistics& statObj,
+    QByteArray generateContentToSaveStatistics(const Search::SearchStatistics& statObj,
                                                const MapaObj& actualMap);
-    virtual void createStatInfo(const SearchStatistics& statObj) = 0;
+    virtual void createStatInfo(const Search::SearchStatistics& statObj) = 0;
     virtual void createMapMinimumData(const MapaObj& map) = 0;
 
     ///

@@ -28,7 +28,7 @@ private:
 
     virtual void initialActions(const QByteArray fileContent) override;
 
-    virtual void createStatInfo(const SearchStatistics& statObj) override;
+    virtual void createStatInfo(const Search::SearchStatistics& statObj) override;
     virtual void createMapMinimumData(const MapaObj& map) override;
 
     ///

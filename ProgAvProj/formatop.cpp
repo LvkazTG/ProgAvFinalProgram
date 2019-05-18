@@ -16,7 +16,7 @@ bool FormatOp::saveMap(const MapaObj& map, const std::string& mapFile)
     return execSaveOperations(mapFile, generateContentToSaveMap(map));
 }
 //--------------------------------------------------------------------------------------------------
-MapaObj FormatOp::loadMap(const std::string mapFile)
+MapaObj FormatOp::loadMap(const std::string& mapFile)
 {
     std::vector<QString> expectedKeys{"mapName", "xSize", "ySize", "points"};
     ConnList newConnList{};
@@ -66,13 +66,13 @@ MapaObj FormatOp::generateLoadContent(const QByteArray fileContent)
     return ret;
 }
 //--------------------------------------------------------------------------------------------------
-bool FormatOp::saveStatistics(const SearchStatistics& statObj, const MapaObj& actualMap,
+bool FormatOp::saveStatistics(const Search::SearchStatistics& statObj, const MapaObj& actualMap,
                               const std::string& statFile)
 {
     return execSaveOperations(statFile, generateContentToSaveStatistics(statObj, actualMap));
 }
 //--------------------------------------------------------------------------------------------------
-QByteArray FormatOp::generateContentToSaveStatistics(const SearchStatistics& statObj,
+QByteArray FormatOp::generateContentToSaveStatistics(const Search::SearchStatistics& statObj,
                                                      const MapaObj& actualMap)
 {
     initialActionsSave();
@@ -92,24 +92,4 @@ bool FormatOp::execSaveOperations(const std::string& filename, const QByteArray 
     return (quantWrite > 0);
 }
 //--------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

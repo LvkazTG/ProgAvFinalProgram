@@ -5,27 +5,29 @@
 
 #include <set>
 
-class SearchGraphplanAdapt : public BaseSearch
+namespace Search
 {
-public:
-    SearchGraphplanAdapt(const MapaObj& map);
+    class SearchGraphplanAdapt : public BaseSearch
+    {
+    public:
+        SearchGraphplanAdapt(const MapaObj& map);
 
-    virtual ~SearchGraphplanAdapt() override = default;
+        virtual ~SearchGraphplanAdapt() override = default;
 
-private:
-    virtual void initLoopConditions() override;
-    virtual bool extraCoonditionLoopSearch() const override;
-    virtual void principalLoopSearch() override;
+    private:
+        virtual void initLoopConditions() override;
+        virtual bool extraConditionLoopSearch() const override;
+        virtual void principalLoopSearch() override;
 
-    void backTrackPath();
-    void backtrackFirstRoute();
+        void backTrackPath();
+        void backtrackFirstRoute();
 
-    std::set<uint16_t> _allVisitedPoints{};
-    std::list<std::set<uint16_t>> _newStatesPerIter{};
-//    std::list<decltype(_allVisitedPoints)> _newStatesPerIter{};
+        std::set<uint16_t> _allVisitedPoints{};
+        std::list<std::set<uint16_t>> _newStatesPerIter{};
+    //    std::list<decltype(_allVisitedPoints)> _newStatesPerIter{};
 
-    uint64_t _limitSearchLayer{1000};
-};
-
+        uint64_t _limitSearchLayer{1000};
+    };
+}
 
 #endif // SEARCHGRAPHPLANADAPT_H

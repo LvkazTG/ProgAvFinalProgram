@@ -8,6 +8,8 @@
 #include <QDebug>
 
 static MapaObj const* bla{nullptr};
+
+using namespace Search;
 //--------------------------------------------------------------------------------------------------
 BaseSearch::BaseSearch(const MapaObj& map) : _bestPathCost{std::numeric_limits<uint64_t>::max()}
 {
@@ -50,7 +52,7 @@ bool BaseSearch::init()
     _searchStats.addNewPointVisited(_startHash);
     _searchStats.addIter();
 
-    while(_keepSearchGoing && (_searchStats.getNumIters() < _maxNumIters) && extraCoonditionLoopSearch())
+    while(_keepSearchGoing && (_searchStats.getNumIters() < _maxNumIters) && extraConditionLoopSearch())
     {
         _searchStats.addIter();
         principalLoopSearch();

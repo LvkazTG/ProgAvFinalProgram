@@ -16,9 +16,11 @@ public:
     void connectPoints(std::shared_ptr<PointObj> point, const std::map<uint16_t, uint8_t>& newConns);
     void connectPoints(const uint16_t pointHash, const std::map<uint16_t, uint8_t>& newConns);
 
-    void connectPoints(std::shared_ptr<PointObj> point, const std::vector<std::tuple<uint8_t, uint16_t> > &newConns);
+    void connectPoints(std::shared_ptr<PointObj> point,
+                       const std::vector<std::tuple<uint8_t, uint16_t>>& newConns);
 
-    void connectNewPoint(std::shared_ptr<PointObj> point, std::shared_ptr<PointObj> newPoint, const uint8_t connCost);
+    void connectNewPoint(std::shared_ptr<PointObj> point, std::shared_ptr<PointObj> newPoint,
+                         const uint8_t connCost);
     void connectNewPoint(const uint16_t pointHash, std::shared_ptr<PointObj> newPoint, const uint8_t connCost);
     void connectNewPoint(const uint16_t pointHash, const uint16_t newPointHash, const uint8_t connCost);
 

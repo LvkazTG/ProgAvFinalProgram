@@ -15,7 +15,6 @@ public:
 
     void criaMapa();
 
-
     void PrintConnectEdelems() const;
 
     void createNew();

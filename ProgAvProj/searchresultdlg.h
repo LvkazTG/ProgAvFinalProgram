@@ -9,7 +9,11 @@ class QTableWidget;
 
 class MapaObj;
 class PointObj;
-class BaseSearch;
+
+namespace Search
+{
+    class BaseSearch;
+}
 
 namespace Ui
 {
@@ -21,7 +25,7 @@ class SearchResultDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit SearchResultDlg(const MapaObj* map, const std::shared_ptr<BaseSearch>& searchUsing,
+    explicit SearchResultDlg(const MapaObj* map, const std::shared_ptr<Search::BaseSearch>& searchUsing,
                              QWidget *parent);
     ~SearchResultDlg();
 

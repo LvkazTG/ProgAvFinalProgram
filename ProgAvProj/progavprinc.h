@@ -24,13 +24,12 @@ private:
     Ui::ProgAvPrinc *ui;
 
     std::shared_ptr<MapaObj> _mapLoad{nullptr};
-    std::shared_ptr<BaseSearch> _searchMethod{nullptr};
+    std::shared_ptr<Search::BaseSearch> _searchMethod{nullptr};
 
     std::string openUserFileChoice();
     std::string getSaveUserFileChoice();
 
     void createSearchUserDlg();
-
 
 private slots:
     void on_btnCreateLoadMap_clicked();

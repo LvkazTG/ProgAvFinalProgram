@@ -8,6 +8,8 @@
 
 #include <QDebug>
 
+using namespace Search;
+
 searchUserStart::searchUserStart(const MapaObj* map, std::shared_ptr<BaseSearch> searchUsing,  QWidget *parent) :
     QDialog{parent}, ui{new Ui::searchUserStart}, _map{map}, _searchMetUsing{searchUsing}
 {
@@ -110,8 +112,11 @@ std::tuple<std::shared_ptr<PointObj>, const bool>
 
         if(okConvX && okConvY)
         {
-            pointObj =_map->getPointByCoord(static_cast<uint8_t>(pXVal),
-                                             static_cast<uint8_t>(pYVal));
+           if((_map->getXSize() > pXVal) && (_map->getYSize() > pYVal))
+           {
+               pointObj =_map->getPointByCoord(static_cast<uint8_t>(pXVal),
+                                                static_cast<uint8_t>(pYVal));
+           }
         }
     }
 
