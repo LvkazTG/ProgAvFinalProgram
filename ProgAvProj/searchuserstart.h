@@ -25,6 +25,8 @@ public:
                              QWidget *parent = nullptr);
     ~searchUserStart();
 
+    void useManualSearch(const bool status);
+
 private slots:
     void on_btnClose_clicked();
 
@@ -34,6 +36,7 @@ private:
     Ui::searchUserStart *ui{nullptr};
     const MapaObj* _map{nullptr};
     std::shared_ptr<BaseSearch> _searchMetUsing{nullptr};
+    bool _useManualSearch{false};
 
     std::tuple<std::shared_ptr<PointObj>, const bool>
         searchUserInfoSinglePoint(const QLineEdit* lnName,

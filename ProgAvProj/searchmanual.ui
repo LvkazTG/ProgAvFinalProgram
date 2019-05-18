@@ -17,7 +17,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="lblInfo">
      <property name="text">
-      <string>Procura Manual</string>
+      <string>Manual Search</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -27,7 +27,7 @@
    <item row="2" column="0">
     <widget class="QPushButton" name="btnBack">
      <property name="text">
-      <string>Voltar</string>
+      <string>Back</string>
      </property>
     </widget>
    </item>
@@ -48,14 +48,14 @@
    <item row="2" column="1">
     <widget class="QPushButton" name="btnSelect">
      <property name="text">
-      <string>Adicionar</string>
+      <string>Add</string>
      </property>
     </widget>
    </item>
    <item row="4" column="0" colspan="2">
-    <widget class="QPushButton" name="btnSave">
+    <widget class="QPushButton" name="btnClose">
      <property name="text">
-      <string>Salvar</string>
+      <string>Close</string>
      </property>
     </widget>
    </item>

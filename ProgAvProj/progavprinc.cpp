@@ -69,10 +69,11 @@ void ProgAvPrinc::on_btnSGraphPlan_clicked()
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSManual_clicked()
 {
-//    SearchManual* manSearch{new SearchManual{"point_1_4", &(*_mapLoad), this}};
-    SearchManual* manSearch{new SearchManual{&(*_mapLoad), this}};
-    manSearch->setAttribute(Qt::WA_DeleteOnClose);
-    manSearch->show();
+    _searchMethod.reset();
+    searchUserStart* searchUserDlg{new searchUserStart{&(*_mapLoad), _searchMethod, this}};
+    searchUserDlg->setAttribute(Qt::WA_DeleteOnClose);
+    searchUserDlg->useManualSearch(true);
+    searchUserDlg->show();
 }
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnViewMap_clicked()

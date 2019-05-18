@@ -6,7 +6,7 @@
 
 #include <QDebug>
 
-SearchManual::SearchManual(const MapaObj* map, QWidget *parent) :
+SearchManual::SearchManual(const MapaObj* map, const std::shared_ptr<PointObj> startPoint, QWidget *parent) :
     QDialog{parent}, ui{new Ui::SearchManual}, _mapInUse{map}
 {
     ui->setupUi(this);
@@ -16,8 +16,6 @@ SearchManual::SearchManual(const MapaObj* map, QWidget *parent) :
     const QStringList headerInfo{"Nome", "pos X", "pos Y", "Custo"};
     ui->tblPathChoice->setHorizontalHeaderLabels(headerInfo);
     ui->tblOptions->setHorizontalHeaderLabels(headerInfo);
-
-    const auto& startPoint{_mapInUse->getPointByName("point_0_0")};
 
     addRow(ui->tblPathChoice, startPoint, 0);
     addOptions(startPoint);
@@ -113,7 +111,10 @@ void SearchManual::on_btnBack_clicked()
     }
 }
 
-
+void SearchManual::on_btnClose_clicked()
+{
+    close();
+}
 
 
 

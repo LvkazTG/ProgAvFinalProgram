@@ -4,6 +4,7 @@
 #include "mapaobj.h"
 #include "pointobj.h"
 #include "searchresultdlg.h"
+#include "searchmanual.h"
 
 #include <QDebug>
 
@@ -13,14 +14,26 @@ searchUserStart::searchUserStart(const MapaObj* map, std::shared_ptr<BaseSearch>
     ui->setupUi(this);
 
     ui->lnMapName->setText(QString::fromStdString(_map->getName()));
-    ui->lnSearchType->setText(QString::fromStdString(_searchMetUsing->getSearchType()));
 
-
+    if(nullptr != _searchMetUsing)
+    {
+        ui->lnSearchType->setText(QString::fromStdString(_searchMetUsing->getSearchType()));
+    }
 }
 
 searchUserStart::~searchUserStart()
 {
     delete ui;
+}
+
+void searchUserStart::useManualSearch(const bool status)
+{
+    _useManualSearch = status;
+
+    ui->lnEndPName->setVisible(!status);
+    ui->lnEndPX->setVisible(!status);
+    ui->lnEndPY->setVisible(!status);
+    ui->lnSearchType->setVisible(!status);
 }
 
 void searchUserStart::on_btnClose_clicked()
@@ -38,24 +51,37 @@ void searchUserStart::on_btnStart_clicked()
                                                        ui->lnEndPX,
                                                        ui->lnEndPY);
 
-    if(okStart && okEnd)
+    if(okStart)
     {
-        _searchMetUsing->definePoints(startPoint->getHash(), endPoint->getHash());
-
-        informRunning();
-        const bool returned{_searchMetUsing->init()};
-
-        if(returned)
+        if(_useManualSearch)
         {
-            SearchResultDlg* dlg{new SearchResultDlg{_map, _searchMetUsing, this}};
-            dlg->show();
+            SearchManual* manSearch{new SearchManual{_map, startPoint, this}};
+            manSearch->setAttribute(Qt::WA_DeleteOnClose);
+            manSearch->show();
+        }
+        else if(okEnd)
+        {
+            _searchMetUsing->definePoints(startPoint->getHash(), endPoint->getHash());
+
+            informRunning();
+            const bool returned{_searchMetUsing->init()};
+
+            if(returned)
+            {
+                SearchResultDlg* dlg{new SearchResultDlg{_map, _searchMetUsing, this}};
+                dlg->show();
+            }
+            else
+            {
+                // Warn user
+            }
+
+            informRunningStop();
         }
         else
         {
-            // Warn user
+            // warn user
         }
-
-        informRunningStop();
     }
     else
     {
