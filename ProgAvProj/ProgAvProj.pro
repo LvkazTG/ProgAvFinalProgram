@@ -40,6 +40,7 @@ SOURCES += \
         progavprinc.cpp \
         routeresultpaint.cpp \
         searchastart.cpp \
+        searchcontrol.cpp \
         searchdeep.cpp \
         searchgraphplanadapt.cpp \
         searchlevel.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
         progavprinc.h \
         routeresultpaint.h \
         searchastart.h \
+        searchcontrol.h \
         searchdeep.h \
         searchgraphplanadapt.h \
         searchlevel.h \

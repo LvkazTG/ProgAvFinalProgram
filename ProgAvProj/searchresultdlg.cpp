@@ -2,35 +2,39 @@
 #include "ui_searchresultdlg.h"
 
 #include "mapaobj.h"
-#include "basesearch.h"
+#include "searchcontrol.h"
 
 using namespace Search;
 
-SearchResultDlg::SearchResultDlg(const MapaObj* map,const std::shared_ptr<Search::BaseSearch>& searchUsing,
-                                 QWidget *parent) :
+SearchResultDlg::SearchResultDlg(const MapaObj* map, QWidget *parent) :
     QDialog{parent}, ui{new Ui::SearchResultDlg}
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->lnMapName->setText(QString::fromStdString(map->getName()));
-    ui->lnSearchType->setText(QString::fromStdString(searchUsing->getSearchType()));
-    ui->lnTotalCost->setText(QString::number(searchUsing->getBestPathCost()));
+    const auto& searchUsing{SearchControl::getInstance().getSearch()};
 
-
-    const QStringList headerInfo{"Nome", "pos X", "pos Y", "Custo"};
-    ui->tblPath->setHorizontalHeaderLabels(headerInfo);
-
-    for(const auto& singleElem : searchUsing->getBestPath())
+    if(nullptr != searchUsing)
     {
-        addRow(ui->tblPath, map->getPoint(singleElem.getPointHash()),
-               static_cast<uint8_t>(singleElem.getActualConnCost()));
+        ui->lnMapName->setText(QString::fromStdString(map->getName()));
+        ui->lnSearchType->setText(QString::fromStdString(searchUsing->getSearchType()));
+        ui->lnTotalCost->setText(QString::number(searchUsing->getBestPathCost()));
+
+
+        const QStringList headerInfo{"Nome", "pos X", "pos Y", "Custo"};
+        ui->tblPath->setHorizontalHeaderLabels(headerInfo);
+
+        for(const auto& singleElem : searchUsing->getBestPath())
+        {
+            addRow(ui->tblPath, map->getPoint(singleElem.getPointHash()),
+                   static_cast<uint8_t>(singleElem.getActualConnCost()));
+        }
+
+        // Remove last line cost
+        ui->tblPath->item((ui->tblPath->rowCount()-1),3)->setData(0, "");
+
+        ui->routePaint->addRouteAndMap(&searchUsing->getBestPath(), map);
     }
-
-    // Remove last line cost
-    ui->tblPath->item((ui->tblPath->rowCount()-1),3)->setData(0, "");
-
-    ui->routePaint->addRouteAndMap(&searchUsing->getBestPath(), map);
 }
 
 SearchResultDlg::~SearchResultDlg()

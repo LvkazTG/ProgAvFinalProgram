@@ -21,8 +21,7 @@ class searchUserStart : public QDialog
     Q_OBJECT
 
 public:
-    explicit searchUserStart(const MapaObj* map, std::shared_ptr<Search::BaseSearch> searchUsing,
-                             QWidget *parent = nullptr);
+    explicit searchUserStart(const MapaObj* map, QWidget *parent = nullptr);
     ~searchUserStart();
 
     void useManualSearch(const bool status);
@@ -35,7 +34,6 @@ private slots:
 private:
     Ui::searchUserStart *ui{nullptr};
     const MapaObj* _map{nullptr};
-    std::shared_ptr<Search::BaseSearch> _searchMetUsing{nullptr};
     bool _useManualSearch{false};
 
     std::tuple<std::shared_ptr<PointObj>, const bool>

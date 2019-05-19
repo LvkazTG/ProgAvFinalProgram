@@ -5,21 +5,23 @@
 #include "pointobj.h"
 #include "searchresultdlg.h"
 #include "searchmanual.h"
+#include "searchcontrol.h"
 
 #include <QDebug>
 
 using namespace Search;
 
-searchUserStart::searchUserStart(const MapaObj* map, std::shared_ptr<BaseSearch> searchUsing,  QWidget *parent) :
-    QDialog{parent}, ui{new Ui::searchUserStart}, _map{map}, _searchMetUsing{searchUsing}
+searchUserStart::searchUserStart(const MapaObj* map, QWidget *parent) :
+    QDialog{parent}, ui{new Ui::searchUserStart}, _map{map}
 {
     ui->setupUi(this);
 
     ui->lnMapName->setText(QString::fromStdString(_map->getName()));
 
-    if(nullptr != _searchMetUsing)
+    const auto& searchMethod{SearchControl::getInstance().getSearch()};
+    if(nullptr != searchMethod)
     {
-        ui->lnSearchType->setText(QString::fromStdString(_searchMetUsing->getSearchType()));
+        ui->lnSearchType->setText(QString::fromStdString(searchMethod->getSearchType()));
     }
 }
 
@@ -63,14 +65,15 @@ void searchUserStart::on_btnStart_clicked()
         }
         else if(okEnd)
         {
-            _searchMetUsing->definePoints(startPoint->getHash(), endPoint->getHash());
+            const auto& searchMethod{SearchControl::getInstance().getSearch()};
+            searchMethod->definePoints(startPoint->getHash(), endPoint->getHash());
 
             informRunning();
-            const bool returned{_searchMetUsing->init()};
+            const bool returned{searchMethod->init()};
 
             if(returned)
             {
-                SearchResultDlg* dlg{new SearchResultDlg{_map, _searchMetUsing, this}};
+                SearchResultDlg* dlg{new SearchResultDlg{_map, this}};
                 dlg->show();
             }
             else

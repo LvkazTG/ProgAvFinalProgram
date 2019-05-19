@@ -23,6 +23,7 @@
 #include "searchuserstart.h"
 #include "dlginitusermap.h"
 #include "searchresultdlg.h"
+#include "searchcontrol.h"
 
 using namespace Search;
 //--------------------------------------------------------------------------------------------------
@@ -47,32 +48,32 @@ void ProgAvPrinc::on_btnCreateLoadMap_clicked()
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSDeep_clicked()
 {
-    _searchMethod = std::make_shared<SearchDeep>(*_mapLoad);
+    SearchControl::getInstance().createSearchType<SearchDeep>(*_mapLoad);
     createSearchUserDlg();
 }
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSLevel_clicked()
 {
-    _searchMethod = std::make_shared<SearchLevel>(*_mapLoad);
+    SearchControl::getInstance().createSearchType<SearchLevel>(*_mapLoad);
     createSearchUserDlg();
 }
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSAStar_clicked()
 {
-    _searchMethod = std::make_shared<SearchAStart>(*_mapLoad);
+    SearchControl::getInstance().createSearchType<SearchAStart>(*_mapLoad);
     createSearchUserDlg();
 }
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSGraphPlan_clicked()
 {
-    _searchMethod = std::make_shared<SearchGraphplanAdapt>(*_mapLoad);
+    SearchControl::getInstance().createSearchType<SearchGraphplanAdapt>(*_mapLoad);
     createSearchUserDlg();
 }
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnSManual_clicked()
 {
-    _searchMethod.reset();
-    searchUserStart* searchUserDlg{new searchUserStart{&(*_mapLoad), _searchMethod, this}};
+    SearchControl::getInstance().getSearch().reset();
+    searchUserStart* searchUserDlg{new searchUserStart{_mapLoad.get(), this}};
     searchUserDlg->setAttribute(Qt::WA_DeleteOnClose);
     searchUserDlg->useManualSearch(true);
     searchUserDlg->show();
@@ -174,7 +175,8 @@ void ProgAvPrinc::on_btnSaveStatisticsJson_clicked()
     if(!saveFileName.empty())
     {
         JsonOp jsonOperator{};
-        jsonOperator.saveStatistics(_searchMethod->getSearchStatistics(), *_mapLoad, saveFileName);
+        const auto& searchStatistics{SearchControl::getInstance().getSearchStatisticsObj()};
+        jsonOperator.saveStatistics(searchStatistics, *_mapLoad, saveFileName);
     }
     else
     {
@@ -191,7 +193,8 @@ void ProgAvPrinc::on_btnSaveStatisticsXml_clicked()
     if(!saveFileName.empty())
     {
         xmlOp xmlOperator{};
-        xmlOperator.saveStatistics(_searchMethod->getSearchStatistics(), *_mapLoad, saveFileName);
+        const auto& searchStatistics{SearchControl::getInstance().getSearchStatisticsObj()};
+        xmlOperator.saveStatistics(searchStatistics, *_mapLoad, saveFileName);
     }
     else
     {
@@ -266,9 +269,10 @@ void ProgAvPrinc::on_btnSaveStatistics_clicked()
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::on_btnFRoute_clicked()
 {
-    if((nullptr != _mapLoad) && (nullptr != _searchMethod))
+    const auto& searchMethod{SearchControl::getInstance().getSearch()};
+    if((nullptr != _mapLoad) && (nullptr != searchMethod))
     {
-        SearchResultDlg* dlg{new SearchResultDlg{&(*_mapLoad), _searchMethod, this}};
+        SearchResultDlg* dlg{new SearchResultDlg{_mapLoad.get(), this}};
         dlg->show();
     }
     else
@@ -279,7 +283,7 @@ void ProgAvPrinc::on_btnFRoute_clicked()
 //--------------------------------------------------------------------------------------------------
 void ProgAvPrinc::createSearchUserDlg()
 {
-    searchUserStart* searchUserDlg{new searchUserStart{&(*_mapLoad), _searchMethod, this}};
+    searchUserStart* searchUserDlg{new searchUserStart{_mapLoad.get(), this}};
     searchUserDlg->setAttribute(Qt::WA_DeleteOnClose);
     searchUserDlg->show();
 }

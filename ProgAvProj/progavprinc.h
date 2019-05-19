@@ -24,7 +24,6 @@ private:
     Ui::ProgAvPrinc *ui;
 
     std::shared_ptr<MapaObj> _mapLoad{nullptr};
-    std::shared_ptr<Search::BaseSearch> _searchMethod{nullptr};
 
     std::string openUserFileChoice();
     std::string getSaveUserFileChoice();
