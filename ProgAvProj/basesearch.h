@@ -30,6 +30,8 @@ namespace Search
 
         void definePoints(const uint16_t startP, const uint16_t endP);
 
+        void forceAddBestCost(const uint64_t newBestCost);
+
     protected:
         void calculateActualCost();
         bool validRoute() const;

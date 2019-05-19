@@ -58,7 +58,9 @@ void MapaObj::createConnectionsMatrix()
                 const auto connectedPoint{(rand() % 2)};
                 if(connectedPoint != 0)
                 {
-                    const uint32_t connectionCost{(pDist*(rand()% distorceDistVal)/distorceDistVal)};
+//                    const uint32_t connectionCost{(pDist*(rand()% distorceDistVal)/distorceDistVal)};
+                    // Increase cost
+                    const uint32_t connectionCost{pDist*(rand()% distorceDistVal)};
                     if(connectionCost != 0)
                     {
                         newLastIndexMatrix->emplace_back(connectionCost, elem2.second->getHash());

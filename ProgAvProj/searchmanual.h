@@ -3,10 +3,11 @@
 
 #include <QDialog>
 #include <QTableWidget>
-
-#include "basesearch.h"
+#include <memory>
 
 class MapaObj;
+class ConnList;
+class PointObj;
 
 namespace Ui
 {

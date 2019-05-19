@@ -42,6 +42,9 @@ void SearchGraphplanAdapt::principalLoopSearch()
             // Find a route to say on best route, for now getting first route on backtrack
             backtrackFirstRoute();
 
+            // Will force entry of route on statistics but not interfere with process
+            forceAddBestCost(_bestPathCost);
+
             qDebug() << "End search finding an end";
             _keepSearchGoing = false;
         }
@@ -180,31 +183,3 @@ void SearchGraphplanAdapt::backtrackFirstRoute()
     _bestPathCost = bestCostSum;
 }
 //--------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

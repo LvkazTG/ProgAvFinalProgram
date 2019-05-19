@@ -60,6 +60,9 @@ void SearchAStart::principalLoopSearch()
                 _visitedPoints.emplace(pointCheckingHash, infoVisitedPoint);
 
                 updateBestPath(pointCheckingHash, pointCheckingCost);
+
+                // Will force entry of route on statistics but not interfere with process
+                forceAddBestCost(_bestPathCost);
             }
             else
             {

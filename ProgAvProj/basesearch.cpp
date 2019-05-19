@@ -153,3 +153,8 @@ void BaseSearch::setSearchType(const std::string& type)
     _searchStats.setSearchMethodName(type);
 }
 //--------------------------------------------------------------------------------------------------
+void BaseSearch::forceAddBestCost(const uint64_t newBestCost)
+{
+    _searchStats.addNewPathCost(newBestCost);
+}
+//--------------------------------------------------------------------------------------------------
